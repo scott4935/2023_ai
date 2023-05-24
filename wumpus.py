@@ -2,11 +2,13 @@ import random # for random action e.g.) gold, wumpus, pitch ...
 
 # make map and place gold, wumpus, pitch
 def mk_map():
+    # set gold position
     while(1):
         gold_pos = random.randint(8,28)
         if(7 <= gold_pos <= 10 or 13<= gold_pos <= 16 or 19 <= gold_pos <= 22 or 25 <= gold_pos <= 28):
             break
 
+    # set wumpus and pitch position
     while True:
         wumpus = []
         pitch = []
@@ -23,12 +25,9 @@ def mk_map():
                 pitch.append(i)
         if (len(wumpus) != 0) and (len(pitch) != 0):
             break
+    # make cave map
     cave_map = [[[0,0,0,0,0] for col in range(6)]for row in range(6)]
     cave_map[gold_pos // 6][gold_pos % 6][2] = 1
-
-    print(wumpus,end="")
-    print(f", {pitch}", end="")
-    print(f", {gold_pos}")
 
     # set stench
     for _ in wumpus:
@@ -64,12 +63,12 @@ def mk_map():
         cave_map[0][_][1] = 0
         cave_map[5][_][1] = 0
 
-    for j in reversed(range(6)):
-        for k in range(6):
-            print(cave_map[j][k],end="")
-        print()
+    return wumpus, pitch, gold_pos, cave_map
         
 
 # main
 if __name__ == "__main__":
 	mk_map()
+
+
+#test
