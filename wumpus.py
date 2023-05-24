@@ -137,3 +137,4 @@ if __name__ == "__main__":
                 print(hold_gold)
 
 #test
+print(testest)
