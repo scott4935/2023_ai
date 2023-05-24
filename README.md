@@ -31,7 +31,13 @@ Wumpus World의 기초적인 형태를 구현해 본다. n 에이전트가 처�
 - Scream: wumpus 괴물이 에이전트가 쏜 화살에 의하여 제거되었는지에 대한 여부
 
 에이전트의 행동은 다음과 같다:
-[GoForward, TurnLeft, TurnRight, Grab, Shoot, Climb] - GoForward: 에이전트가 한 격자를 이동한다. - TurnLeft: 현재 격자에서 왼쪽으로 90도 방향 전환한다. - TurnRight: 현재 격자에서 오른쪽으로 90도 방향 전환한다. - Grab: 금(gold)을 잡는다. - Shoot: 현재 에이전트의 방향으로 화살을 쏜다. - Climb: 에이전트가 금을 획득하여 [1,1] 격자로 되돌아 오면, 동굴을 빠져나간다.
+[GoForward, TurnLeft, TurnRight, Grab, Shoot, Climb]
+- GoForward: 에이전트가 한 격자를 이동한다. 
+- TurnLeft: 현재 격자에서 왼쪽으로 90도 방향 전환한다. 
+- TurnRight: 현재 격자에서 오른쪽으로 90도 방향 전환한다. 
+- Grab: 금(gold)을 잡는다. 
+- Shoot: 현재 에이전트의 방향으로 화살을 쏜다. 
+- Climb: 에이전트가 금을 획득하여 [1,1] 격자로 되돌아 오면, 동굴을 빠져나간다.
 
 에이전트의 기본 값
 
