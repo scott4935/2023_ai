@@ -17,17 +17,19 @@ World를 프로그래밍하는 것입니다.
  - 5/9(화): 프로젝트 제안서 발표 및 제출:
  - 6/6(화), 6/8(목), 6/13(화): 프로젝트 발표
  - 6/22(목) 17시: 최종보고서 제출
- - 
+ 
 【Project 내용】
 
 Wumpus World의 기초적인 형태를 구현해 본다. n 에이전트가 처한 환경
 탐험하는 에이전트가 처한 환경은 4×4 격자로 구성되어 있으며, (1,1) 격자는
 안전하다(safe)고 가정한다. 4×4 격자 세계(Grid World)의 고정된 위치에 금(gold), wumpus 괴물 및 웅덩이(pitch)가 존재한다. wumpus 괴물 및 웅덩이가 발생할 확률은 각각의 격자에서 독립적이며, 0.10으로 가정한다. 에이전트가 금을 획득하여 [1,1] 격자로 되돌아오면 탐험은 종료된다. 에이전트의 센서를 통한 입력은 다음과 같다:
-[Stench, Breeze, Glitter, Bump, Scream] - Stench: wumpus 괴물의 존재 여부
+[Stench, Breeze, Glitter, Bump, Scream]
+- Stench: wumpus 괴물의 존재 여부
 - Breeze: 웅덩이의 존재 여부
 - Glitter: 금(gold)의 존재 여부
 - Bump: 벽(wall)의 존재 여부
 - Scream: wumpus 괴물이 에이전트가 쏜 화살에 의하여 제거되었는지에 대한 여부
+
 에이전트의 행동은 다음과 같다:
 [GoForward, TurnLeft, TurnRight, Grab, Shoot, Climb] - GoForward: 에이전트가 한 격자를 이동한다. - TurnLeft: 현재 격자에서 왼쪽으로 90도 방향 전환한다. - TurnRight: 현재 격자에서 오른쪽으로 90도 방향 전환한다. - Grab: 금(gold)을 잡는다. - Shoot: 현재 에이전트의 방향으로 화살을 쏜다. - Climb: 에이전트가 금을 획득하여 [1,1] 격자로 되돌아 오면, 동굴을 빠져나간다.
 
