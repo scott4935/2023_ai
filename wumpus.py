@@ -27,6 +27,7 @@ def go_forward():
 # grab the gold
 def grab():
     global hold_gold
+    print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[0]][now_pos[1]]}")
     if (cave_map[now_pos[0]][now_pos[1]][2] == 1):
         hold_gold = 1
 
