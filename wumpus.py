@@ -32,14 +32,17 @@ def mk_map():
     print(f", {pitch}", end="")
     print(f", {gold_pos}")
 
+    # set stench
     for _ in wumpus:
         print(_)
         cave_map[_ // 6][_ % 6][0] = 1
 
+    # set breeze
     for _ in pitch:
         print(_)
         cave_map[_ // 6][_ % 6][0] = 1
 
+    # set bump
     for _ in range(5):
         cave_map[_][0][3] = 1
         cave_map[_][5][3] = 1
