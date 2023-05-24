@@ -1,5 +1,36 @@
 import random # for random action e.g.) gold, wumpus, pitch ...
 
+# position value of agent
+now_pos = [1,1]
+# does the agent hold gold
+hold_gold = 0
+# dirction[right, up, left, down]
+direction = [1, 0, 0, 0]
+
+# turn_left
+def turn_left():
+    now_direction = direction.index(1)
+    direction[now_direction] = 0
+    direction[(now_direction + 1) % 4] = 1
+
+# turn_right
+def turn_right():
+    now_direction = direction.index(1)
+    direction[now_direction] = 0
+    direction[now_direction - 1] = 1
+
+# go_forward / 0 == go right, 1 == go up, 2 == go left, 3 == go down
+def go_forward():
+    match direction.index(1):
+        case 0:
+            now_pos[1] += 1
+        case 1:
+            now_pos[0] += 1
+        case 2:
+            now_pos[1] -= 1
+        case 3:
+            now_pos[0] -= 1
+
 # make map and place gold, wumpus, pitch
 def mk_map():
     # set gold position
@@ -68,7 +99,22 @@ def mk_map():
 
 # main
 if __name__ == "__main__":
-	mk_map()
-
+    wumpus, pitch, gold_pos, cave_map = mk_map()
+    # chk map and position ... etc
+    while True:
+        print(f"--------------------------------------\ninput test value\n[1] show cave map\n[2] turn left\n[3] turn right\n[4] go forward")
+        match int(input()):
+            case 1:
+                print(f"{wumpus}, {pitch}, {gold_pos}")
+                for j in reversed(range(6)):
+                    for k in range(6):
+                        print(cave_map[j][k],end="")
+                    print()
+            case 2:
+                turn_left()
+                print(direction)
+            case 3:
+                turn_right()
+                print(direction)
 
 #test
