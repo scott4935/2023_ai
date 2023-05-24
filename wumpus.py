@@ -1,12 +1,5 @@
 import random # for random action e.g.) gold, wumpus, pitch ...
 
-# position value of agent
-now_pos = [1,1]
-# does the agent hold gold
-hold_gold = 0
-# dirction[right, up, left, down]
-direction = [1, 0, 0, 0]
-
 # turn_left
 def turn_left():
     now_direction = direction.index(1)
@@ -19,20 +12,28 @@ def turn_right():
     direction[now_direction] = 0
     direction[now_direction - 1] = 1
 
-# go_forward / 0 == go right, 1 == go up, 2 == go left, 3 == go down
+# go_forward / 0 == E, 1 == N, 2 == W, 3 == S
 def go_forward():
     match direction.index(1):
         case 0:
-            now_pos[1] += 1
-        case 1:
             now_pos[0] += 1
+        case 1:
+            now_pos[1] += 1
         case 2:
-            now_pos[1] -= 1
-        case 3:
             now_pos[0] -= 1
+        case 3:
+            now_pos[1] -= 1
+
+# grab the gold
+def grab():
+    global hold_gold
+    print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}")
+    if cave_map[now_pos[0]][now_pos[1]][2] == 1:
+        hold_gold = 1
 
 # make map and place gold, wumpus, pitch
 def mk_map():
+    global gold_pos
     # set gold position
     while(1):
         gold_pos = random.randint(8,28)
@@ -41,7 +42,9 @@ def mk_map():
 
     # set wumpus and pitch position
     while True:
+        global wumpus
         wumpus = []
+        global pitch
         pitch = []
         for i in range(0,36):
             if i == gold_pos or i == 7:
@@ -57,6 +60,7 @@ def mk_map():
         if (len(wumpus) != 0) and (len(pitch) != 0):
             break
     # make cave map
+    global cave_map
     cave_map = [[[0,0,0,0,0] for col in range(6)]for row in range(6)]
     cave_map[gold_pos // 6][gold_pos % 6][2] = 1
 
@@ -93,16 +97,23 @@ def mk_map():
         cave_map[5][_][0] = 0
         cave_map[0][_][1] = 0
         cave_map[5][_][1] = 0
-
-    return wumpus, pitch, gold_pos, cave_map
         
 
 # main
 if __name__ == "__main__":
-    wumpus, pitch, gold_pos, cave_map = mk_map()
+    # position value of agent
+    global now_pos
+    now_pos = [1,1]
+    # does the agent hold gold
+    hold_gold = 0
+    # dirction[E, N, W, S]
+    global direction
+    direction = [1, 0, 0, 0]
+    mk_map()
     # chk map and position ... etc
     while True:
-        print(f"--------------------------------------\ninput test value\n[1] show cave map\n[2] turn left\n[3] turn right\n[4] go forward")
+        print(f"--------------------------------------\ninput test value\n[1] show cave map\n[2] turn left")
+        print(f"[3] turn right\n[4] go forward\n[5] grab the gold")
         match int(input()):
             case 1:
                 print(f"{wumpus}, {pitch}, {gold_pos}")
@@ -116,5 +127,11 @@ if __name__ == "__main__":
             case 3:
                 turn_right()
                 print(direction)
+            case 4:
+                go_forward()
+                print(now_pos)
+            case 5:
+                grab()
+                print(hold_gold)
 
 #test
