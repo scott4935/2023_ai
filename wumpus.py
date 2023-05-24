@@ -1,7 +1,5 @@
 import random # for random action e.g.) gold, wumpus, pitch ...
 
-
-
 # make map and place gold, wumpus, pitch
 def mk_map():
     while(1):
@@ -34,21 +32,37 @@ def mk_map():
 
     # set stench
     for _ in wumpus:
-        print(_)
         cave_map[_ // 6][_ % 6][0] = 1
+        cave_map[_ // 6 - 1][_ % 6][0] = 1
+        cave_map[_ // 6 + 1][_ % 6][0] = 1
+        cave_map[_ // 6][_ % 6 - 1][0] = 1
+        cave_map[_ // 6][_ % 6 + 1][0] = 1
+
 
     # set breeze
     for _ in pitch:
-        print(_)
-        cave_map[_ // 6][_ % 6][0] = 1
+        cave_map[_ // 6][_ % 6][1] = 1
+        cave_map[_ // 6 - 1][_ % 6][1] = 1
+        cave_map[_ // 6 + 1][_ % 6][1] = 1
+        cave_map[_ // 6][_ % 6 - 1][1] = 1
+        cave_map[_ // 6][_ % 6 + 1][1] = 1
 
     # set bump
-    for _ in range(5):
+    for _ in range(6):
         cave_map[_][0][3] = 1
         cave_map[_][5][3] = 1
-    for _ in range(5):
+        cave_map[_][0][0] = 0
+        cave_map[_][5][0] = 0
+        cave_map[_][0][1] = 0
+        cave_map[_][5][1] = 0
+
+    for _ in range(6):
         cave_map[0][_][3] = 1
         cave_map[5][_][3] = 1
+        cave_map[0][_][0] = 0
+        cave_map[5][_][0] = 0
+        cave_map[0][_][1] = 0
+        cave_map[5][_][1] = 0
 
     for j in reversed(range(6)):
         for k in range(6):
