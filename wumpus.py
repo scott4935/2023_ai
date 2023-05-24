@@ -20,6 +20,7 @@ def mk_map():
         if (len(wumpus) != 0) and (len(pitch) != 0):
             break
     cave_map = [[0,0,0,0,0] for col in range(16)]
+    cave_map[0][2] = 1
     print(wumpus)
     print(pitch)
     print(gold_pos)
