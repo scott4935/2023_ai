@@ -27,8 +27,7 @@ def go_forward():
 # grab the gold
 def grab():
     global hold_gold
-    print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}")
-    if cave_map[now_pos[0]][now_pos[1]][2] == 1:
+    if (cave_map[now_pos[0]][now_pos[1]][2] == 1):
         hold_gold = 1
 
 # make map and place gold, wumpus, pitch
@@ -105,6 +104,7 @@ if __name__ == "__main__":
     global now_pos
     now_pos = [1,1]
     # does the agent hold gold
+    global hold_gold
     hold_gold = 0
     # dirction[E, N, W, S]
     global direction
@@ -132,6 +132,7 @@ if __name__ == "__main__":
                 print(now_pos)
             case 5:
                 grab()
+                # while testing..
                 print(hold_gold)
 
 #test
