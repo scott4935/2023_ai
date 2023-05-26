@@ -16,21 +16,62 @@ def turn_right():
 def go_forward():
     match direction.index(1):
         case 0:
-            now_pos[0] += 1
+            if(now_pos[0] < 4):
+                now_pos[0] += 1
         case 1:
-            now_pos[1] += 1
+            if(now_pos[1] < 4):
+                now_pos[1] += 1
         case 2:
-            now_pos[0] -= 1
+            if(now_pos[0] > 1):
+                now_pos[0] -= 1
         case 3:
-            now_pos[1] -= 1
+            if(now_pos[1] > 1):
+                now_pos[1] -= 1
 
 # grab the gold
 def grab():
     global hold_gold
-    print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[0]][now_pos[1]]}")
-    if (cave_map[now_pos[0]][now_pos[1]][2] == 1):
+    # reversed x,y ..... i cant know reason
+    print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[1]][now_pos[0]]}")
+    if (cave_map[now_pos[1]][now_pos[0]][2] == 1):
         hold_gold = 1
 
+# shoot arrow
+def shoot():
+    global arrows
+    global now_pos
+    global direction
+    global cave_map
+    if(arrows > 0):
+        arrows -=1
+        match direction.index(1):
+            case 0:
+                for _ in range(now_pos[0], 5):
+                    if cave_map[now_pos[_]][now_pos[1]][5] == 1:
+                        cave_map[now_pos[_]][now_pos[1]][5] = 0
+                        cave_map[now_pos[_] - 1][now_pos[1]][0] = 0
+                        cave_map[now_pos[_] + 1][now_pos[1]][0] = 0
+                        cave_map[now_pos[_]][now_pos[1] - 1][0] = 0
+                        cave_map[now_pos[_]][now_pos[1] + 1][0] = 0
+            case 1:
+                for _ in range(now_pos[1], 5):
+                    if cave_map[now_pos[0]][now_pos[_]][5] == 1:
+                        cave_map[now_pos[0]][now_pos[_]][5] = 0                
+            case 2:
+                for _ in range(now_pos[0], 0, -1):
+                    if cave_map[now_pos[_]][now_pos[1]][5] == 1:
+                        cave_map[now_pos[_]][now_pos[1]][5] = 0
+                        cave_map[now_pos[_]][now_pos[1]][5] = 0
+                        cave_map[now_pos[_] - 1][now_pos[1]][0] = 0
+                        cave_map[now_pos[_] + 1][now_pos[1]][0] = 0
+                        cave_map[now_pos[_]][now_pos[1] - 1][0] = 0
+                        cave_map[now_pos[_]][now_pos[1] + 1][0] = 0
+            case 3:
+                for _ in range(now_pos[1], 0. -1):
+                    if cave_map[now_pos[0]][now_pos[_]][5] == 1:
+                        cave_map[now_pos[0]][now_pos[_]][5] = 0
+                        
+    
 # make map and place gold, wumpus, pitch
 def mk_map():
     global gold_pos
@@ -61,12 +102,14 @@ def mk_map():
             break
     # make cave map
     global cave_map
-    cave_map = [[[0,0,0,0,0] for col in range(6)]for row in range(6)]
+    # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch]
+    # [0, 1, 2, 3, 4, 5, 6]
+    cave_map = [[[0,0,0,0,0,0,0] for col in range(6)]for row in range(6)]
     cave_map[gold_pos // 6][gold_pos % 6][2] = 1
 
     # set stench
     for _ in wumpus:
-        cave_map[_ // 6][_ % 6][0] = 1
+        cave_map[_ // 6][_ % 6][5] = 1
         cave_map[_ // 6 - 1][_ % 6][0] = 1
         cave_map[_ // 6 + 1][_ % 6][0] = 1
         cave_map[_ // 6][_ % 6 - 1][0] = 1
@@ -75,7 +118,7 @@ def mk_map():
 
     # set breeze
     for _ in pitch:
-        cave_map[_ // 6][_ % 6][1] = 1
+        cave_map[_ // 6][_ % 6][6] = 1
         cave_map[_ // 6 - 1][_ % 6][1] = 1
         cave_map[_ // 6 + 1][_ % 6][1] = 1
         cave_map[_ // 6][_ % 6 - 1][1] = 1
@@ -111,16 +154,26 @@ if __name__ == "__main__":
     global direction
     direction = [1, 0, 0, 0]
     mk_map()
+    # arrows(init val 2)
+    global arrows
+    arrows = 2
     # chk map and position ... etc
     while True:
-        print(f"--------------------------------------\ninput test value\n[1] show cave map\n[2] turn left")
+        print(f"--------------------------------------\ninput test value\n[0] now position\n[1] show cave map\n[2] turn left")
         print(f"[3] turn right\n[4] go forward\n[5] grab the gold")
         match int(input()):
+            case 0:
+                print(f"{now_pos[0]}, {now_pos[1]}, {cave_map[now_pos[0]][now_pos[1]]}")
             case 1:
                 print(f"{wumpus}, {pitch}, {gold_pos}")
                 for j in reversed(range(6)):
                     for k in range(6):
                         print(cave_map[j][k],end="")
+                    print()
+                print(f"{wumpus}, {pitch}, {gold_pos}")
+                for j in reversed(range(6)):
+                    for k in (range(6)):
+                        print(cave_map[j][k][2],end="")
                     print()
             case 2:
                 turn_left()
@@ -130,10 +183,8 @@ if __name__ == "__main__":
                 print(direction)
             case 4:
                 go_forward()
-                print(now_pos)
+                print(f"{now_pos}\n{cave_map[now_pos[1]][now_pos[0]]}\n")
             case 5:
                 grab()
-                # while testing..
                 print(hold_gold)
 
-#test
