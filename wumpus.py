@@ -41,35 +41,41 @@ def shoot():
     global arrows
     global now_pos
     global direction
+    # dirction[E, N, W, S]
     global cave_map
+    # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch]
+    # [0, 1, 2, 3, 4, 5, 6]
     if(arrows > 0):
         arrows -=1
         match direction.index(1):
             case 0:
-                for _ in range(now_pos[0], 5):
-                    if cave_map[now_pos[_]][now_pos[1]][5] == 1:
-                        cave_map[now_pos[_]][now_pos[1]][5] = 0
-                        cave_map[now_pos[_] - 1][now_pos[1]][0] = 0
-                        cave_map[now_pos[_] + 1][now_pos[1]][0] = 0
-                        cave_map[now_pos[_]][now_pos[1] - 1][0] = 0
-                        cave_map[now_pos[_]][now_pos[1] + 1][0] = 0
+                if cave_map[now_pos[0] + 1][now_pos[1]][5] == 1:
+                    cave_map[now_pos[0] + 1][now_pos[1]][5] = 0
+                    cave_map[now_pos[0] + 1 + 1][now_pos[1]][0] = 0
+                    cave_map[now_pos[0] + 1][now_pos[1] + 1][0] = 0
+                    cave_map[now_pos[0] + 1 - 1][now_pos[1]][0] = 0
+                    cave_map[now_pos[0] + 1][now_pos[1] - 1][0] = 0
             case 1:
-                for _ in range(now_pos[1], 5):
-                    if cave_map[now_pos[0]][now_pos[_]][5] == 1:
-                        cave_map[now_pos[0]][now_pos[_]][5] = 0                
+                if cave_map[now_pos[0]][now_pos[1] + 1][5] == 1:
+                    cave_map[now_pos[0]][now_pos[1] + 1][5] = 0
+                    cave_map[now_pos[0] + 1][now_pos[1] + 1][0] = 0
+                    cave_map[now_pos[0]][now_pos[1] + 1 + 1][0] = 0
+                    cave_map[now_pos[0] - 1][now_pos[1] + 1][0] = 0
+                    cave_map[now_pos[0]][now_pos[1] + 1 - 1][0] = 0        
             case 2:
-                for _ in range(now_pos[0], 0, -1):
-                    if cave_map[now_pos[_]][now_pos[1]][5] == 1:
-                        cave_map[now_pos[_]][now_pos[1]][5] = 0
-                        cave_map[now_pos[_]][now_pos[1]][5] = 0
-                        cave_map[now_pos[_] - 1][now_pos[1]][0] = 0
-                        cave_map[now_pos[_] + 1][now_pos[1]][0] = 0
-                        cave_map[now_pos[_]][now_pos[1] - 1][0] = 0
-                        cave_map[now_pos[_]][now_pos[1] + 1][0] = 0
+                if cave_map[now_pos[0] - 1][now_pos[1]][5] == 1:
+                    cave_map[now_pos[0] - 1][now_pos[1]][5] = 0
+                    cave_map[now_pos[0] - 1 + 1][now_pos[1]][0] = 0
+                    cave_map[now_pos[0] - 1][now_pos[1] + 1][0] = 0
+                    cave_map[now_pos[0] - 1 - 1][now_pos[1]][0] = 0
+                    cave_map[now_pos[0] - 1][now_pos[1] - 1][0] = 0
             case 3:
-                for _ in range(now_pos[1], 0. -1):
-                    if cave_map[now_pos[0]][now_pos[_]][5] == 1:
-                        cave_map[now_pos[0]][now_pos[_]][5] = 0
+                if cave_map[now_pos[0]][now_pos[1] - 1][5] == 1:
+                    cave_map[now_pos[0]][now_pos[1] - 1][5] = 0
+                    cave_map[now_pos[0] + 1][now_pos[1] - 1][0] = 0
+                    cave_map[now_pos[0]][now_pos[1] - 1 + 1][0] = 0
+                    cave_map[now_pos[0] - 1][now_pos[1] - 1][0] = 0
+                    cave_map[now_pos[0]][now_pos[1] - 1 - 1][0] = 0
                         
     
 # make map and place gold, wumpus, pitch
@@ -187,6 +193,3 @@ if __name__ == "__main__":
             case 5:
                 grab()
                 print(hold_gold)
-
-
-print("test")
