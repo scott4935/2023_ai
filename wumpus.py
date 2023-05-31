@@ -210,7 +210,7 @@ def mk_map():
     global agent_map
     # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch, visited]
     # [0, 1, 2, 3, 4, 5, 6, 7]
-    agent_map = [[[0,0,0,0,0,0,0] for col in range(6)]for row in range(6)]
+    agent_map = [[[0,0,0,0,0,0,0,0] for col in range(6)]for row in range(6)]
 
     # set stench
     for _ in wumpus:
