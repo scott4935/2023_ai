@@ -1,16 +1,16 @@
-from flask import Flask, render_template
+from flask import Flask, jsonify
 from flask_restx import Api, Resource
+from flask_cors import CORS
 from server.apis import load_api
 
 app = Flask(__name__)
+CORS(app,expose_headers='Location')
 myApi=Api(app, errors=Flask.errorhandler)
 
-@app.route("/")
-@app.route("/index")
-def index():
+@app.route("/", methods=['GET'])
+def hello():
     return "hello world!" 
-    #return render_template("index.html")
 
 load_api(myApi)
 if __name__ == '__main__':
-    app.run(host = "127.0.0.1", port = 5000, debug=True)
+    app.run(host = "127.0.0.1", port = 5000, debug=True, use_reloader=False)
