@@ -187,5 +187,3 @@ if __name__ == "__main__":
             case 5:
                 grab()
                 print(hold_gold)
-
-print("test")
