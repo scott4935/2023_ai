@@ -60,34 +60,78 @@ def shoot():
                     cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
                     cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
                     #..done
+                    if cave_map[now_pos[1]+ 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1]+ 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] + 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] + 1 + 1][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
+
             case 1:
                 # y, x
                 print(f"in case 1\n{cave_map[now_pos[1] + 1][now_pos[0]][5]}")
                 if cave_map[now_pos[1] + 1][now_pos[0]][5] == 1:
                     cave_map[now_pos[1] + 1][now_pos[0]][5] = 0
-                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
                     cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
                     cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0      
+                    #..done
+                    if cave_map[now_pos[1] + 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] + 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1] + 1 + 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] + 1 + 1][now_pos[0]][4] = 1
+                    if cave_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
+                    if cave_map[now_pos[1] + 1 - 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] + 1 - 1][now_pos[0]][4] = 1     
             case 2:
                 # y, x
                 print(f"in case 2\n{cave_map[now_pos[1]][now_pos[0] - 1][5]}")
                 if cave_map[now_pos[1]][now_pos[0] - 1][5] == 1: 
-                    cave_map[now_pos[1] + 1][now_pos[0]][5] = 0
-                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
-                    cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1]][now_pos[0] - 1][5] = 0
+                    cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
                     cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
+                    cave_map[now_pos[1]][now_pos[0] - 1 - 1][0] = 0
+                    cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
+                    if cave_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
+                    if cave_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] - 1 - 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] - 1 - 1][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1 
             case 3:
                 # y, x
                 print(f"in case 3\n{cave_map[now_pos[1] - 1][now_pos[0]][5]}")
                 if cave_map[now_pos[0] - 1][now_pos[1]][5] == 1:
-                    cave_map[now_pos[1] + 1][now_pos[0]][5] = 0
-                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
-                    cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
-                        
+                    cave_map[now_pos[0] - 1][now_pos[1]][5] = 0
+                    cave_map[now_pos[0] - 1][now_pos[1] + 1][0] = 0
+                    cave_map[now_pos[0] - 1 + 1][now_pos[1]][0] = 0
+                    cave_map[now_pos[0] - 1][now_pos[1] - 1][0] = 0
+                    cave_map[now_pos[0] - 1 - 1][now_pos[1]][0] = 0
+                    if cave_map[now_pos[0] - 1][now_pos[1] + 1][3] != 1:
+                        cave_map[now_pos[0] - 1][now_pos[1] + 1][4] = 1
+                    if cave_map[now_pos[0] - 1 + 1][now_pos[1]][3] != 1:
+                        cave_map[now_pos[0] - 1 + 1][now_pos[1]][4] = 1
+                    if cave_map[now_pos[0] - 1][now_pos[1] - 1][3] != 1:
+                        cave_map[now_pos[0] - 1][now_pos[1] - 1][4] = 1
+                    if cave_map[now_pos[0] - 1 - 1][now_pos[1]][3] != 1:
+                        cave_map[now_pos[0] - 1 - 1][now_pos[1]][4] = 1 
+def climb():
+    global now_pos
+    global hold_gold
+    if now_pos[0] == 1 and now_pos[1] == 1:
+        if hold_gold == 1:
+            print("clear!! bye bye~")
+            exit()
+        else:
+            print("no! u dont have gold")
+    else:
+        print("nono~ go back to the base")
     
 # make map and place gold, wumpus, pitch
 def mk_map():
