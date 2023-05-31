@@ -62,7 +62,8 @@ def go_forward():
         print("u r dead....start with new agent")
         now_pos = [1,1]
     else:
-        agent_map[now_pos[1]][now_pos[0]][0:7] = cave_map[1][1]
+        for _ in range(7):
+            agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
         agent_map[now_pos[1]][now_pos[0]][7] = 1
 
 
@@ -73,6 +74,7 @@ def grab():
     print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[1]][now_pos[0]]}")
     if (cave_map[now_pos[1]][now_pos[0]][2] == 1):
         hold_gold = 1
+        cave_map[now_pos[1]][now_pos[0]][2] = 0
 
 # shoot arrow
 def shoot():
@@ -191,7 +193,7 @@ def mk_map():
                 continue
             if 0 <= i <= 6 or 11 <= i <= 12 or 17<= i <= 18 or 23 <= i <= 24 or 29 <= i < 36:
                 continue
-            rand_val = random.randrange(100)
+            rand_val = random.randrange(0,100,1)
             if rand_val < 10:
                 wumpus.append(i)
                 continue
@@ -250,7 +252,7 @@ def mk_map():
         cave_map[0][_][1] = 0
         cave_map[5][_][1] = 0
     
-    agent_map[1][1][0:7] = cave_map[1][1]
+    agent_map[1][1][:7] = cave_map[1][1][:7]
     agent_map[1][1][7] = 1
         
 
@@ -280,7 +282,8 @@ if __name__ == "__main__":
     # chk map and position ... etc
     while True:
         print(f"--------------------------------------\ninput test value\n[0] now position\n[1] show cave map\n[2] turn left")
-        print(f"[3] turn right\n[4] go forward\n[5] grab the gold\n[6] shoot")
+        print(f"[3] turn right\n[4] go forward\n[5] grab the gold\n[6] shoot\n[7] show agent map")
+        print(f"[8] climb")
         match int(input()):
             case 0:
                 print(f"{now_pos[0]}, {now_pos[1]}, {cave_map[now_pos[1]][now_pos[0]]}")
@@ -290,11 +293,11 @@ if __name__ == "__main__":
                     for k in range(6):
                         print(cave_map[j][k],end="")
                     print()
-                print(f"{wumpus}, {pitch}, {gold_pos}")
-                for j in reversed(range(6)):
-                    for k in (range(6)):
-                        print(cave_map[j][k][2],end="")
-                    print()
+                # print(f"{wumpus}, {pitch}, {gold_pos}")
+                # for j in reversed(range(6)):
+                #     for k in (range(6)):
+                #         print(cave_map[j][k][2],end="")
+                #     print()
             case 2:
                 turn_left()
                 print(direction)
@@ -310,3 +313,10 @@ if __name__ == "__main__":
             case 6:
                 shoot()
                 print("shoot done")
+            case 7:
+                for j in reversed(range(6)):
+                    for k in range(6):
+                        print(agent_map[j][k],end="")
+                    print()
+            case 8:
+                climb()
