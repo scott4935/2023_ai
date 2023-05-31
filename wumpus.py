@@ -60,6 +60,15 @@ def shoot():
                     cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
                     cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
                     #..done
+                    if cave_map[now_pos[1]+ 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1]+ 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] + 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] + 1 + 1][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
+
             case 1:
                 # y, x
                 print(f"in case 1\n{cave_map[now_pos[1] + 1][now_pos[0]][5]}")
