@@ -188,3 +188,4 @@ if __name__ == "__main__":
                 grab()
                 print(hold_gold)
 
+print("test")
