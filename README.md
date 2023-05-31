@@ -2,13 +2,13 @@
 
 [사용법]
 ### python 3.10 이상 버전 사용
-'''python
+```python
 pip install -r requirements requirements.txt
-'''
+```
 
-'''bash
+```bash
 python3 app.py
-'''
+```
 
 ### 127.0.0.1:5000 번 포트로 웹서버 오픈됩니다.
 
