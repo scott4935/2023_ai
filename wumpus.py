@@ -36,19 +36,35 @@ def turn_right():
 
 # go_forward / 0 == E, 1 == N, 2 == W, 3 == S
 def go_forward():
+    global now_pos
     match direction.index(1):
         case 0:
             if(now_pos[0] < 4):
                 now_pos[0] += 1
+            else:
+                print(f"bumped out!")
         case 1:
             if(now_pos[1] < 4):
                 now_pos[1] += 1
+            else:
+                print(f"bumped out!")
         case 2:
             if(now_pos[0] > 1):
                 now_pos[0] -= 1
+            else:
+                print(f"bumped out!")
         case 3:
             if(now_pos[1] > 1):
                 now_pos[1] -= 1
+            else:
+                print(f"bumped out!")
+    if cave_map[now_pos[1]][now_pos[0]][5] == 1 or cave_map[now_pos[1]][now_pos[0]][6] == 1:
+        print("u r dead....start with new agent")
+        now_pos = [1,1]
+    else:
+        agent_map[now_pos[1]][now_pos[0]][0:7] = cave_map[1][1]
+        agent_map[now_pos[1]][now_pos[0]][7] = 1
+
 
 # grab the gold
 def grab():
@@ -190,6 +206,12 @@ def mk_map():
     cave_map = [[[0,0,0,0,0,0,0] for col in range(6)]for row in range(6)]
     cave_map[gold_pos // 6][gold_pos % 6][2] = 1
 
+    # make agent map
+    global agent_map
+    # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch, visited]
+    # [0, 1, 2, 3, 4, 5, 6, 7]
+    agent_map = [[[0,0,0,0,0,0,0] for col in range(6)]for row in range(6)]
+
     # set stench
     for _ in wumpus:
         cave_map[_ // 6][_ % 6][5] = 1
@@ -211,6 +233,8 @@ def mk_map():
     for _ in range(6):
         cave_map[_][0][3] = 1
         cave_map[_][5][3] = 1
+        agent_map[_][0][3] = 1
+        agent_map[_][5][3] = 1
         cave_map[_][0][0] = 0
         cave_map[_][5][0] = 0
         cave_map[_][0][1] = 0
@@ -219,10 +243,15 @@ def mk_map():
     for _ in range(6):
         cave_map[0][_][3] = 1
         cave_map[5][_][3] = 1
+        agent_map[0][_][3] = 1
+        agent_map[5][_][3] = 1
         cave_map[0][_][0] = 0
         cave_map[5][_][0] = 0
         cave_map[0][_][1] = 0
         cave_map[5][_][1] = 0
+    
+    agent_map[1][1][0:7] = cave_map[1][1]
+    agent_map[1][1][7] = 1
         
 
 #########################################################################
