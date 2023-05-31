@@ -45,37 +45,48 @@ def shoot():
     global cave_map
     # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch]
     # [0, 1, 2, 3, 4, 5, 6]
+    print(arrows)
     if(arrows > 0):
         arrows -=1
-        match direction.index(1):
+        print(direction.index(1))
+        match int(direction.index(1)):
             case 0:
-                if cave_map[now_pos[0] + 1][now_pos[1]][5] == 1:
-                    cave_map[now_pos[0] + 1][now_pos[1]][5] = 0
-                    cave_map[now_pos[0] + 1 + 1][now_pos[1]][0] = 0
-                    cave_map[now_pos[0] + 1][now_pos[1] + 1][0] = 0
-                    cave_map[now_pos[0] + 1 - 1][now_pos[1]][0] = 0
-                    cave_map[now_pos[0] + 1][now_pos[1] - 1][0] = 0
+                # y, x
+                print(f"in case 0\n{cave_map[now_pos[1]][now_pos[0] + 1][5]}")
+                if cave_map[now_pos[1]][now_pos[0] + 1][5] == 1:
+                    cave_map[now_pos[1]][now_pos[0] + 1][5] = 0
+                    cave_map[now_pos[1]+ 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1]][now_pos[0] + 1 + 1][0] = 0
+                    cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
+                    #..done
             case 1:
-                if cave_map[now_pos[0]][now_pos[1] + 1][5] == 1:
-                    cave_map[now_pos[0]][now_pos[1] + 1][5] = 0
-                    cave_map[now_pos[0] + 1][now_pos[1] + 1][0] = 0
-                    cave_map[now_pos[0]][now_pos[1] + 1 + 1][0] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] + 1][0] = 0
-                    cave_map[now_pos[0]][now_pos[1] + 1 - 1][0] = 0        
+                # y, x
+                print(f"in case 1\n{cave_map[now_pos[1] + 1][now_pos[0]][5]}")
+                if cave_map[now_pos[1] + 1][now_pos[0]][5] == 1:
+                    cave_map[now_pos[1] + 1][now_pos[0]][5] = 0
+                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0      
             case 2:
-                if cave_map[now_pos[0] - 1][now_pos[1]][5] == 1:
-                    cave_map[now_pos[0] - 1][now_pos[1]][5] = 0
-                    cave_map[now_pos[0] - 1 + 1][now_pos[1]][0] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] + 1][0] = 0
-                    cave_map[now_pos[0] - 1 - 1][now_pos[1]][0] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] - 1][0] = 0
+                # y, x
+                print(f"in case 2\n{cave_map[now_pos[1]][now_pos[0] - 1][5]}")
+                if cave_map[now_pos[1]][now_pos[0] - 1][5] == 1: 
+                    cave_map[now_pos[1] + 1][now_pos[0]][5] = 0
+                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
             case 3:
-                if cave_map[now_pos[0]][now_pos[1] - 1][5] == 1:
-                    cave_map[now_pos[0]][now_pos[1] - 1][5] = 0
-                    cave_map[now_pos[0] + 1][now_pos[1] - 1][0] = 0
-                    cave_map[now_pos[0]][now_pos[1] - 1 + 1][0] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] - 1][0] = 0
-                    cave_map[now_pos[0]][now_pos[1] - 1 - 1][0] = 0
+                # y, x
+                print(f"in case 3\n{cave_map[now_pos[1] - 1][now_pos[0]][5]}")
+                if cave_map[now_pos[0] - 1][now_pos[1]][5] == 1:
+                    cave_map[now_pos[1] + 1][now_pos[0]][5] = 0
+                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
                         
     
 # make map and place gold, wumpus, pitch
@@ -166,10 +177,10 @@ if __name__ == "__main__":
     # chk map and position ... etc
     while True:
         print(f"--------------------------------------\ninput test value\n[0] now position\n[1] show cave map\n[2] turn left")
-        print(f"[3] turn right\n[4] go forward\n[5] grab the gold")
+        print(f"[3] turn right\n[4] go forward\n[5] grab the gold\n[6] shoot")
         match int(input()):
             case 0:
-                print(f"{now_pos[0]}, {now_pos[1]}, {cave_map[now_pos[0]][now_pos[1]]}")
+                print(f"{now_pos[0]}, {now_pos[1]}, {cave_map[now_pos[1]][now_pos[0]]}")
             case 1:
                 print(f"{wumpus}, {pitch}, {gold_pos}")
                 for j in reversed(range(6)):
@@ -193,3 +204,6 @@ if __name__ == "__main__":
             case 5:
                 grab()
                 print(hold_gold)
+            case 6:
+                shoot()
+                print("shoot done")
