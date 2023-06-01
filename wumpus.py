@@ -67,6 +67,75 @@ def go_forward():
         agent_map[now_pos[1]][now_pos[0]][7] = 1
 
 
+def go_east():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            go_forward()
+        case 1:
+            turn_right()
+            go_forward()
+        case 2:
+            while direction.index(1) != 0:
+                turn_right()
+            go_forward()
+        case 3:
+            turn_left()
+            go_forward()
+
+
+def go_north():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            turn_left()
+            go_forward()
+        case 1:
+            go_forward()
+        case 2:
+            turn_right()
+            go_forward()
+        case 3:
+            while direction.index(1) != 1:
+                turn_left()
+            go_forward()
+
+def go_west():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            while direction.index(1) != 2:
+                turn_left()
+            go_forward()
+        case 1:
+            turn_left()
+            go_forward()
+        case 2:
+            go_forward()
+        case 3:
+            turn_right()
+            go_forward()
+
+def go_south():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            turn_right()
+            go_forward()
+        case 1:
+            while direction.index(1) != 3:
+                turn_right()
+            go_forward()
+        case 2:
+            turn_left()
+            go_forward()
+        case 3:
+            go_forward()
+
 # grab the gold
 def grab():
     global hold_gold
@@ -255,7 +324,6 @@ def mk_map():
     agent_map[1][1][:7] = cave_map[1][1][:7]
     agent_map[1][1][7] = 1
         
-
 #########################################################################
 #                   _          ____      _      _                       #
 #                  / \__/|    /  _ \    / \    / \  /|                  #
@@ -305,7 +373,15 @@ if __name__ == "__main__":
                 turn_right()
                 print(direction)
             case 4:
-                go_forward()
+                match int(input("[1] east\n[2] north\n[3] west\n[4] south\n")):
+                    case 1:
+                        go_east()
+                    case 2:
+                        go_north()
+                    case 3:
+                        go_west()
+                    case 4:
+                        go_south()
                 print(f"{now_pos}\n{cave_map[now_pos[1]][now_pos[0]]}\n")
             case 5:
                 grab()
