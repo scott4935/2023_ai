@@ -67,6 +67,75 @@ def go_forward():
         agent_map[now_pos[1]][now_pos[0]][7] = 1
 
 
+def go_east():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            go_forward()
+        case 1:
+            turn_right()
+            go_forward()
+        case 2:
+            while direction.index(1) == 0:
+                turn_right()
+            go_forward()
+        case 3:
+            turn_left()
+            go_forward()
+
+
+def go_north():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            turn_left()
+            go_forward()
+        case 1:
+            go_forward()
+        case 2:
+            turn_right()
+            go_forward()
+        case 3:
+            while direction.index(1) == 1:
+                turn_left()
+            go_forward()
+
+def go_west():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            while direction.index(1) == 2:
+                turn_left()
+            go_forward()
+        case 1:
+            turn_left()
+            go_forward()
+        case 2:
+            go_forward()
+        case 3:
+            turn_right()
+            go_forward()
+
+def go_south():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            turn_right()
+            go_forward()
+        case 1:
+            while direction.index(1) == 3:
+                turn_right()
+            go_forward()
+        case 2:
+            turn_left()
+            go_forward()
+        case 3:
+            go_forward()
+
 # grab the gold
 def grab():
     global hold_gold
