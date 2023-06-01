@@ -9,8 +9,12 @@ import random # for random action e.g.) gold, wumpus, pitch ...
 #                                                                       #
 #########################################################################
 
-def KB(code, *args):
-    print(f"test")
+def KB(code, env, *args):
+    num_args = len(args)
+    if env == "pitch":
+        print(f"test pitch")
+    elif env == "wumpus":
+        print(f"test wumpus")
 
 
 #########################################################################
@@ -66,6 +70,75 @@ def go_forward():
             agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
         agent_map[now_pos[1]][now_pos[0]][7] = 1
 
+
+def go_east():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            go_forward()
+        case 1:
+            turn_right()
+            go_forward()
+        case 2:
+            while direction.index(1) != 0:
+                turn_right()
+            go_forward()
+        case 3:
+            turn_left()
+            go_forward()
+
+
+def go_north():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            turn_left()
+            go_forward()
+        case 1:
+            go_forward()
+        case 2:
+            turn_right()
+            go_forward()
+        case 3:
+            while direction.index(1) != 1:
+                turn_left()
+            go_forward()
+
+def go_west():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            while direction.index(1) != 2:
+                turn_left()
+            go_forward()
+        case 1:
+            turn_left()
+            go_forward()
+        case 2:
+            go_forward()
+        case 3:
+            turn_right()
+            go_forward()
+
+def go_south():
+    # dirction[E, N, W, S]
+    global direction
+    match direction.index(1):
+        case 0:
+            turn_right()
+            go_forward()
+        case 1:
+            while direction.index(1) != 3:
+                turn_right()
+            go_forward()
+        case 2:
+            turn_left()
+            go_forward()
+        case 3:
+            go_forward()
 
 # grab the gold
 def grab():
@@ -254,8 +327,29 @@ def mk_map():
     
     agent_map[1][1][:7] = cave_map[1][1][:7]
     agent_map[1][1][7] = 1
-        
 
+#########################################################################
+#                    ____  _____ _____ _      _____                     #
+#                   /  _ \/  __//  __// \  /|/__ __\                    #
+#                   | / \|| |  _|  \  | |\ ||  / \                      #
+#                   | |-||| |_//|  /_ | | \||  | |                      #
+#                   \_/ \|\____\\____\\_/  \|  \_/                      #
+#                                                                       #
+#########################################################################
+
+def exec_agent():
+    # position value of agent
+    global now_pos
+    now_pos = [1,1]
+    # does the agent hold gold
+    global hold_gold
+    hold_gold = 0
+    # dirction[E, N, W, S]
+    global direction
+    direction = [1, 0, 0, 0]
+    # arrows(init val 2)
+    global arrows
+    arrows = 2
 #########################################################################
 #                   _          ____      _      _                       #
 #                  / \__/|    /  _ \    / \    / \  /|                  #
@@ -305,7 +399,15 @@ if __name__ == "__main__":
                 turn_right()
                 print(direction)
             case 4:
-                go_forward()
+                match int(input("[1] east\n[2] north\n[3] west\n[4] south\n")):
+                    case 1:
+                        go_east()
+                    case 2:
+                        go_north()
+                    case 3:
+                        go_west()
+                    case 4:
+                        go_south()
                 print(f"{now_pos}\n{cave_map[now_pos[1]][now_pos[0]]}\n")
             case 5:
                 grab()
