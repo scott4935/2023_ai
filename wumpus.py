@@ -9,8 +9,12 @@ import random # for random action e.g.) gold, wumpus, pitch ...
 #                                                                       #
 #########################################################################
 
-def KB(code, *args):
-    print(f"test")
+def KB(code, env, *args):
+    num_args = len(args)
+    if env == "pitch":
+        print(f"test pitch")
+    elif env == "wumpus":
+        print(f"test wumpus")
 
 
 #########################################################################
