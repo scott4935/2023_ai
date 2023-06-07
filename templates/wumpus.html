@@ -1,15 +1,68 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title>뒷배경 이미지 설정</title>
+  <style>
+  .container {
+  display: flex;
+  justify-content: center;
+}
+
+.line {
+  display: flex;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+  </style>
 </head>
 <body>
-    <h1>웹사이트 만들기</h1>
-    <p>나의 첫번째 웹사이트</p>
-    <input type='text' placeholder="이름"></button>
-    <input type='button' value='버튼'></button>
+  <div class="container">
+    <div class="line">
+      <div class="item">
+        <img src="pitch.png" alt="이미지1">
+        <p>텍스트1</p>
+      </div>
+      <div class="item">
+        <img src="wumpus.png" alt="이미지2">
+        <p>텍스트2</p>
+      </div>
+      <div class="item">
+        <img src="glitter.png" alt="이미지3">
+        <p>텍스트3</p>
+      </div>
+    </div>
+  </div>
+  <script>
+  function sendPostRequest(data) {
+    fetch('http://localhost:5000/wumpus', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    });
+  }
+
+  fetch('http://localhost:5000/wumpus')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      sendPostRequest(data);
+
+      setInterval(function() {
+        sendPostRequest(data);
+      }, 1000);
+    });
+
+  </script>
 </body>
 </html>
