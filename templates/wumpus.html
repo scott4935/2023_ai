@@ -1,68 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>뒷배경 이미지 설정</title>
-  <style>
-  .container {
-  display: flex;
-  justify-content: center;
-}
-
-.line {
-  display: flex;
-}
-
-.item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 10px;
-}
-  </style>
+  <title>Team 08 :: The Wumpus World!</title>
+  <link rel="stylesheet" href="wumpus.css">
 </head>
 <body>
-  <div class="container">
-    <div class="line">
-      <div class="item">
-        <img src="pitch.png" alt="이미지1">
-        <p>텍스트1</p>
+  <div class="all">
+    <div class="title">
+      <h1>The Wumpus World</h1>
+    </div>
+    <div class="element-container" style="display:flex; justify-content:center;
+    align-items:center; margin-bottom:20px;">
+      <a href="https://github.com/scott4935/2023_ai">
+        <img src="github.png" style="width:25px; margin:5px;">
+      </a> project repository
+    </div>
+
+    <div class="elements">
+      <div class="sbg-container">
+        <div class="element-container">
+          <img src="stench_icon.png"> stench
+        </div>
+        <div class="element-container">
+          <img src="breeze_icon.png"> breeze
+        </div>
+        <div class="element-container">
+          <img src="glitter_icon.png"> glitter
+        </div>
       </div>
-      <div class="item">
-        <img src="wumpus.png" alt="이미지2">
-        <p>텍스트2</p>
+
+      <div class="table-container">
+        <table id="table"></table>
       </div>
-      <div class="item">
-        <img src="glitter.png" alt="이미지3">
-        <p>텍스트3</p>
+
+      <div class="ag-container">
+        <div class="element-container">
+          <img src="gold.png"> gold
+        </div>
+        <div class="element-container">
+          <img src="arrow.png"> arrows
+        </div>
       </div>
     </div>
+
+    <div class="footer">
+      <div class="element-container">
+        <a href="https://github.com/scott4935"><img src="github.png"></a> 201720887 윤영찬 | scott4935
+      </div>
+      <div class="element-container">
+        <a href="https://github.com/tw0n3"><img src="github.png"></a> 201821360 이한 | tw0n3
+      </div>
+      <div class="element-container">
+        <a href="https://github.com/yerimsw"><img src="github.png"></a> 201921348 선우예림 | yerimsw
+      </div>
+    </div>
+
   </div>
-  <script>
-  function sendPostRequest(data) {
-    fetch('http://localhost:5000/wumpus', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-    });
-  }
-
-  fetch('http://localhost:5000/wumpus')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      sendPostRequest(data);
-
-      setInterval(function() {
-        sendPostRequest(data);
-      }, 1000);
-    });
-
-  </script>
+  <script src="wumpus.js"></script>
 </body>
 </html>
