@@ -23,20 +23,22 @@ def KB(code, *args):
 #########################################################################
 
 # turn_left
-def turn_left():
+def turn_left(direction):
     now_direction = direction.index(1)
     direction[now_direction] = 0
     direction[(now_direction + 1) % 4] = 1
+    return direction
 
 # turn_right
-def turn_right():
+def turn_right(direction):
     now_direction = direction.index(1)
     direction[now_direction] = 0
     direction[now_direction - 1] = 1
+    return direction
 
 # go_forward / 0 == E, 1 == N, 2 == W, 3 == S
-def go_forward():
-    global now_pos
+def go_forward(now_pos, direction):
+    #global now_pos
     match direction.index(1):
         case 0:
             if(now_pos[0] < 4):
@@ -65,6 +67,7 @@ def go_forward():
         for _ in range(7):
             agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
         agent_map[now_pos[1]][now_pos[0]][7] = 1
+    return now_pos
 
 
 def go_east():
@@ -343,7 +346,7 @@ def new_setting():
     settings['direction'] = direction
     settings['agent_map'] = agent_map
     settings['arrows'] = arrows
-    
+
     return settings
 
 #########################################################################

@@ -54,46 +54,46 @@ function main(data) {
             // 맵의 뒷배경(wall pitch visited)
             if(agentMap[i][j][3]!=0 || agentMap[i][j][6]!=0 || agentMap[i][j][7]!=0){
                 var cellImg = document.createElement("img");
-                if(agentMap[i][j][3]==1) cellImg.src="wall.png";
-                else if(agentMap[i][j][6]==1) cellImg.src="pitch.png";
-                else if(agentMap[i][j][7]==1) cellImg.src="visited.png";
+                if(agentMap[i][j][3]==1) cellImg.src="img/wall.png";
+                else if(agentMap[i][j][6]==1) cellImg.src="img/pitch.png";
+                else if(agentMap[i][j][7]==1) cellImg.src="img/visited.png";
                 div.appendChild(cellImg);
             }
 
             // stench
             if(agentMap[i][j][0]==1) {
                 var stenchImg = document.createElement("img");
-                stenchImg.src = "stench.png";
+                stenchImg.src = "img/stench.png";
                 div.appendChild(stenchImg);
             }
 
             // breeze
             if(agentMap[i][j][1]==1) {
                 var breezeImg = document.createElement("img");
-                breezeImg.src = "breeze.png";
+                breezeImg.src = "img/breeze.png";
                 div.appendChild(breezeImg);
             }
 
             // glitter
             if(agentMap[i][j][2]==1) {
                 var glitterImg = document.createElement("img");
-                glitterImg.src = "glitter.png";
+                glitterImg.src = "img/glitter.png";
                 div.appendChild(glitterImg);
             }
 
             // wumpus
             if(agentMap[i][j][5]==1) {
                 var wumpusImg = document.createElement("img");
-                wumpusImg.src = "wumpus.png";
+                wumpusImg.src = "img/wumpus.png";
                 div.appendChild(wumpusImg);
             }
 
             // agent
             if(agentPosition[0]==i && agentPosition[1]==j) {
-                if(agentDirection[0]==1) agentImg.src="agente.png";
-                else if(agentDirection[1]==1) agentImg.src="agentn.png";
-                else if(agentDirection[2]==1) agentImg.src="agents.png";
-                else agentImg.src="agentw.png";
+                if(agentDirection[0]==1) agentImg.src="img/agente.png";
+                else if(agentDirection[1]==1) agentImg.src="img/agentn.png";
+                else if(agentDirection[2]==1) agentImg.src="img/agents.png";
+                else agentImg.src="img/agentw.png";
                 div.appendChild(agentImg);
             }
 
