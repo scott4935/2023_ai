@@ -4,17 +4,13 @@ from ..service.wumpus_service import (
     KB, turn_left, turn_right, go_forward, grab, shoot, climb, mk_map, new_setting
 )
 
-api = Namespace('wumpus', description='Wumpus related operations')
+api = Namespace('test', description='Wumpus related operations')
 
 @api.route('/')
-class Wumpus(Resource):
+class Test(Resource):
     def get(self):
-        print("test")
-        res = new_setting()
-        print(res['now_pos'])
-        print(res['agent_map'])
-        return jsonify(res = res)
+        return render_template('test.html')
 
     def post(self):
         print("tesT")
-        return "post test"
+        return "test post test"

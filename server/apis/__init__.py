@@ -1,4 +1,5 @@
-from .wumpus import Wumpus, Test
+from .wumpus import Wumpus
+from .test import Test
 
 def load_api(api_module):
     api_module.add_resource(Wumpus,'/wumpus',endpoint='wumpus')
