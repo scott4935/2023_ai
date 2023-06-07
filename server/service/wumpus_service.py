@@ -343,8 +343,7 @@ def new_setting():
     settings['direction'] = direction
     settings['agent_map'] = agent_map
     settings['arrows'] = arrows
-
-    #return now_pos, hold_gold, direction, arrow, agent_map
+    
     return settings
 
 #########################################################################
