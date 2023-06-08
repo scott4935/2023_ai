@@ -1,17 +1,3 @@
-/*
-fetch('http://localhost:5000/wumpus')
-  .then(response => response.json())
-  .then(data => {
-    main(data);
-
-// 1초마다 POST 요청을 보낸다.
-    setInterval(function() {
-      sendPostRequest(data);
-    }, 1000);
-
-  });
-*/
-
 function main(data) {
 
     var agentMap = data.res.agent_map;
@@ -113,7 +99,6 @@ class Observer { // 상태를 갖는 객체
 
   sendPostRequest(action) {
     this.staticData.res.action=action;
-    console.log(this.staticData);
 
     fetch('http://localhost:5000/wumpus', {
       method: 'POST',
@@ -126,13 +111,13 @@ class Observer { // 상태를 갖는 객체
     .then(data => {
       this.staticData = data; // POST response를 저장
       main(this.staticData);
+      console.log(this.staticData);
     });
   }
-
 }
 
 const observer = new Observer();
-console.log(observer.staticData); // 생성자를 통해 객체를 생성했는데 왜 초기화 되지 않았지?
+console.log(observer.staticData);
 
 document.querySelector("#go-forward").addEventListener("click", function() {
   observer.sendPostRequest(0); // 객체에 저장된 상태를 통해 POST 요청 send.
