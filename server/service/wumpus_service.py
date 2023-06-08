@@ -71,7 +71,7 @@ def go_forward(now_pos, direction):
         for _ in range(7):
             agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
         agent_map[now_pos[1]][now_pos[0]][7] = 1
-    return now_pos, direction
+    return now_pos, direction, agent_map
 
 
 def go_east():
@@ -350,6 +350,7 @@ def new_setting():
     settings['direction'] = direction
     settings['agent_map'] = agent_map
     settings['arrows'] = arrows
+    settings['act_list'] = []
 
     return settings
 
