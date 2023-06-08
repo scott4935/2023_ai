@@ -13,13 +13,14 @@ class Wumpus(Resource):
         res = new_setting()
         print(res['now_pos'])
         print(res['agent_map'])
+
         return jsonify(res = res)
 
     def post(self):
         res = request.get_json()['res']
         
         if(res['action'] == 0):
-            res['now_pos'] = go_forward(res['now_pos'], res['direction'])
+            res['now_pos'], res['direction'] = go_forward(res['now_pos'], res['direction'])
         elif(res['action'] == 1):
             res['direction'] = turn_left(res['direction'])
         elif(res['action'] == 2):
