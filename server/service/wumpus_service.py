@@ -63,11 +63,12 @@ def go_forward(now_pos, direction):
     if cave_map[now_pos[1]][now_pos[0]][5] == 1 or cave_map[now_pos[1]][now_pos[0]][6] == 1:
         print("u r dead....start with new agent")
         now_pos = [1,1]
+        direction = [1, 0, 0, 0]
     else:
         for _ in range(7):
             agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
         agent_map[now_pos[1]][now_pos[0]][7] = 1
-    return now_pos
+    return now_pos, direction
 
 
 def go_east():
