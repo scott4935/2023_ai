@@ -40,6 +40,7 @@ def turn_right():
 
 # go_forward / 0 == E, 1 == N, 2 == W, 3 == S
 def go_forward():
+    global direction
     global now_pos
     match direction.index(1):
         case 0:
