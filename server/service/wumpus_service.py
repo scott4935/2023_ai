@@ -341,7 +341,7 @@ def new_setting():
 #                                                                       #
 #########################################################################
 
-""" def exec_agent():
+def exec_agent():
     # position value of agent
     now_pos = [1,1]
     # now_pos = [1,1]
@@ -423,7 +423,7 @@ def new_setting():
             case 4:
                 go_south(now_pos, direction)
 
-        input() """
+        input()
 
 
 
@@ -497,5 +497,5 @@ if __name__ == "__main__":
                     print()
             case 8:
                 climb()
-            case 9:
-                exec_agent()
+"""         case 9:
+                exec_agent() """
