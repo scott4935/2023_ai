@@ -1,7 +1,7 @@
 from flask import jsonify, render_template, request
 from flask_restx import Namespace, Resource
 from ..service.wumpus_service import (
-    KB, turn_left, turn_right, go_forward, grab, shoot, climb, mk_map, new_setting
+    turn_left, turn_right, go_forward, grab, shoot, climb, mk_map, new_setting, exec_agent
 )
 
 api = Namespace('wumpus', description='Wumpus related operations')
@@ -27,4 +27,5 @@ class Wumpus(Resource):
             res['direction'] = turn_right(res['direction'])
             res['act_list'].append('turn_right')
         
+        #exec_agent(res)
         return jsonify(res = res)

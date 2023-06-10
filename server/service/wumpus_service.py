@@ -319,15 +319,15 @@ def new_setting():
     mk_map()
     arrows = 2
 
-    settings = {}
-    settings['now_pos'] = now_pos
-    settings['hold_gold'] = hold_gold
-    settings['direction'] = direction
-    settings['agent_map'] = agent_map
-    settings['arrows'] = arrows
-    settings['act_list'] = []
+    res = {}
+    res['now_pos'] = now_pos
+    res['hold_gold'] = hold_gold
+    res['direction'] = direction
+    res['agent_map'] = agent_map
+    res['arrows'] = arrows
+    res['act_list'] = []
 
-    return settings
+    return res
 
 
 #########################################################################
@@ -339,11 +339,25 @@ def new_setting():
 #                                                                       #
 #########################################################################
 
-def exec_agent():
+def exec_agent(res):
 
     # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch, visited]
     # [0, 1, 2, 3, 4, 5, 6, 7]
     # chk data
+    """ result format
+    res['now_pos'] = now_pos
+    res['hold_gold'] = hold_gold
+    res['direction'] = direction
+    res['agent_map'] = agent_map
+    res['arrows'] = arrows
+    res['act_list'] = []
+    """
+    now_pos = res['now_pos']
+    hold_gold = res['hold_gold']
+    direction = res['direction']
+    agent_map = res['agent_map']
+    arrows = res['arrows']
+    act_list = res['act_list']
 
     # return queue
     for_return = []
@@ -412,7 +426,14 @@ def exec_agent():
                 go_south(now_pos, direction)
 
         input()
+        res['now_pos'] = now_pos
+        res['hold_gold'] = hold_gold
+        res['direction'] = direction
+        res['agent_map'] = agent_map
+        res['arrows'] = arrows
+        res['act_list'] = []
 
+        return res
         ###############################
         ## 백에서 프론트로 데이터 쏴줌 ##
         ###############################
