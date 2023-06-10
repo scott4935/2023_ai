@@ -313,12 +313,10 @@ def mk_map():
 def new_setting():
     now_pos = [1,1]
     # does the agent hold gold
-    global hold_gold
     hold_gold = 0
     # dirction[E, N, W, S]
     direction = [1, 0, 0, 0]
     mk_map()
-    global arrows
     arrows = 2
 
     settings = {}
@@ -342,28 +340,18 @@ def new_setting():
 #########################################################################
 
 def exec_agent():
-    # position value of agent
-    now_pos = [1,1]
-    # now_pos = [1,1]
-    # does the agent hold gold
-    global hold_gold
-    hold_gold = 0
-    # dirction[E, N, W, S]
-    direction = [1, 0, 0, 0]
-    # arrows(init val 2)
-    global arrows
-    arrows = 2
+
     # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch, visited]
     # [0, 1, 2, 3, 4, 5, 6, 7]
-    global agent_map
     # chk data
-    print(now_pos)
-    test = now_pos
-    print(agent_map[now_pos[0]][now_pos[1]])
 
     # return queue
     for_return = []
     while True:
+        #################################
+        ## 여기에 프론트에서 data 받아옴 ##
+        #################################
+
         for_return.append(now_pos)
         print(for_return)
         # chk bump
@@ -425,7 +413,9 @@ def exec_agent():
 
         input()
 
-
+        ###############################
+        ## 백에서 프론트로 데이터 쏴줌 ##
+        ###############################
 
 #########################################################################
 #                   _          ____      _      _                       #
