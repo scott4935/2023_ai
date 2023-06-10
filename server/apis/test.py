@@ -1,7 +1,7 @@
 from flask import jsonify, render_template
 from flask_restx import Namespace, Resource
 from ..service.wumpus_service import (
-    KB, turn_left, turn_right, go_forward, grab, shoot, climb, mk_map, new_setting
+    turn_left, turn_right, go_forward, grab, shoot, climb, mk_map, new_setting
 )
 
 api = Namespace('test', description='Wumpus related operations')
