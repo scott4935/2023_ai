@@ -25,7 +25,6 @@ def turn_right(direction):
 
 # go_forward / 0 == E, 1 == N, 2 == W, 3 == S
 def go_forward(now_pos, direction):
-    #global now_pos
     match direction.index(1):
         case 0:
             if(now_pos[0] < 4):
@@ -342,7 +341,7 @@ def new_setting():
 #                                                                       #
 #########################################################################
 
-def exec_agent():
+""" def exec_agent():
     # position value of agent
     now_pos = [1,1]
     # now_pos = [1,1]
@@ -424,7 +423,9 @@ def exec_agent():
             case 4:
                 go_south(now_pos, direction)
 
-        input()
+        input() """
+
+
 
 #########################################################################
 #                   _          ____      _      _                       #
