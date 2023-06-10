@@ -61,77 +61,73 @@ def go_forward(now_pos, direction):
     return now_pos, direction, agent_map
 
 
-def go_east():
+def go_east(now_pos, direction):
     # dirction[E, N, W, S]
-    global direction
     match direction.index(1):
         case 0:
-            go_forward()
+            go_forward(now_pos, direction)
         case 1:
-            turn_right()
-            go_forward()
+            turn_right(direction)
+            go_forward(now_pos, direction)
         case 2:
             while direction.index(1) != 0:
-                turn_right()
-            go_forward()
+                turn_right(direction)
+            go_forward(now_pos, direction)
         case 3:
-            turn_left()
-            go_forward()
+            turn_left(direction)
+            go_forward(now_pos, direction)
 
 
-def go_north():
+def go_north(now_pos, direction):
     # dirction[E, N, W, S]
-    global direction
     match direction.index(1):
         case 0:
-            turn_left()
-            go_forward()
+            turn_left(direction)
+            go_forward(now_pos, direction)
         case 1:
-            go_forward()
+            go_forward(now_pos, direction)
         case 2:
-            turn_right()
-            go_forward()
+            turn_right(direction)
+            go_forward(now_pos, direction)
         case 3:
             while direction.index(1) != 1:
-                turn_left()
-            go_forward()
+                turn_left(direction)
+            go_forward(now_pos, direction)
 
-def go_west():
+def go_west(now_pos, direction):
     # dirction[E, N, W, S]
-    global direction
     match direction.index(1):
         case 0:
             while direction.index(1) != 2:
-                turn_left()
-            go_forward()
+                turn_left(direction)
+            go_forward(now_pos, direction)
         case 1:
-            turn_left()
-            go_forward()
+            turn_left(direction)
+            go_forward(now_pos, direction)
         case 2:
-            go_forward()
+            go_forward(now_pos, direction)
         case 3:
-            turn_right()
-            go_forward()
+            turn_right(direction)
+            go_forward(now_pos, direction)
 
-def go_south():
+def go_south(now_pos, direction):
     # dirction[E, N, W, S]
-    global direction
     match direction.index(1):
         case 0:
-            turn_right()
-            go_forward()
+            turn_right(direction)
+            go_forward(now_pos, direction)
         case 1:
             while direction.index(1) != 3:
-                turn_right()
-            go_forward()
+                turn_right(direction)
+            go_forward(now_pos, direction)
         case 2:
-            turn_left()
-            go_forward()
+            turn_left(direction)
+            go_forward(now_pos, direction)
         case 3:
-            go_forward()
+            go_forward(now_pos, direction)
 
 # grab the gold
-def grab():
+def grab(now_pos):
     global hold_gold
     # reversed x,y ..... i cant know reason
     print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[1]][now_pos[0]]}")
@@ -140,10 +136,8 @@ def grab():
         cave_map[now_pos[1]][now_pos[0]][2] = 0
 
 # shoot arrow
-def shoot():
+def shoot(now_pos, direction):
     global arrows
-    global now_pos
-    global direction
     # dirction[E, N, W, S]
     global cave_map
     # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch]
@@ -224,8 +218,7 @@ def shoot():
                         cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
                     if cave_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1:
                         cave_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1 
-def climb():
-    global now_pos
+def climb(now_pos):
     global hold_gold
     if now_pos[0] == 1 and now_pos[1] == 1:
         if hold_gold == 1:
@@ -319,13 +312,11 @@ def mk_map():
     agent_map[1][1][7] = 1
         
 def new_setting():
-    global now_pos
     now_pos = [1,1]
     # does the agent hold gold
     global hold_gold
     hold_gold = 0
     # dirction[E, N, W, S]
-    global direction
     direction = [1, 0, 0, 0]
     mk_map()
     global arrows
@@ -353,13 +344,12 @@ def new_setting():
 
 def exec_agent():
     # position value of agent
-    global now_pos
+    now_pos = [1,1]
     # now_pos = [1,1]
     # does the agent hold gold
     global hold_gold
     hold_gold = 0
     # dirction[E, N, W, S]
-    global direction
     direction = [1, 0, 0, 0]
     # arrows(init val 2)
     global arrows
@@ -426,13 +416,13 @@ def exec_agent():
 
         match forward_choice:
             case 1:
-                go_east()
+                go_east(now_pos, direction)
             case 2:
-                go_north()
+                go_north(now_pos, direction)
             case 3:
-                go_west()
+                go_west(now_pos, direction)
             case 4:
-                go_south()
+                go_south(now_pos, direction)
 
         input()
 
@@ -447,13 +437,11 @@ def exec_agent():
 
 if __name__ == "__main__":
     # position value of agent
-    global now_pos
     now_pos = [1,1]
     # does the agent hold gold
     global hold_gold
     hold_gold = 0
     # dirction[E, N, W, S]
-    global direction
     direction = [1, 0, 0, 0]
     mk_map()
     # arrows(init val 2)
@@ -479,27 +467,27 @@ if __name__ == "__main__":
                 #         print(cave_map[j][k][2],end="")
                 #     print()
             case 2:
-                turn_left()
+                turn_left(direction)
                 print(direction)
             case 3:
-                turn_right()
+                turn_right(direction)
                 print(direction)
             case 4:
                 match int(input("[1] east\n[2] north\n[3] west\n[4] south\n")):
                     case 1:
-                        go_east()
+                        go_east(now_pos, direction)
                     case 2:
-                        go_north()
+                        go_north(now_pos, direction)
                     case 3:
-                        go_west()
+                        go_west(now_pos, direction)
                     case 4:
-                        go_south()
+                        go_south(now_pos, direction)
                 print(f"{now_pos}\n{cave_map[now_pos[1]][now_pos[0]]}\n")
             case 5:
-                grab()
+                grab(now_pos)
                 print(hold_gold)
             case 6:
-                shoot()
+                shoot(now_pos, direction)
                 print("shoot done")
             case 7:
                 for j in reversed(range(6)):
