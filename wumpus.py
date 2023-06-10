@@ -1,23 +1,6 @@
 import random # for random action e.g.) gold, wumpus, pitch ...
 
 #########################################################################
-#                            _  __       ____                           #
-#                           / |/ /      /  __\                          #
-#                           |   /       | | //                          #
-#                           |   \       | |_\\                          #
-#                           \_|\_\      \____/                          #
-#                                                                       #
-#########################################################################
-
-def KB(code, env, *args):
-    num_args = len(args)
-    if env == "pitch":
-        print(f"test pitch")
-    elif env == "wumpus":
-        print(f"test wumpus")
-
-
-#########################################################################
 #               ____    ____    _____    _    ____    _                 #
 #              /  _ \  /   _\  /__ __\  / \  /  _ \  / \  /|            #
 #              | / \|  |  /      / \    | |  | / \|  | |\ ||            #
@@ -345,7 +328,7 @@ def mk_map():
 def exec_agent():
     # position value of agent
     global now_pos
-    now_pos = [1,1]
+    # now_pos = [1,1]
     # does the agent hold gold
     global hold_gold
     hold_gold = 0
@@ -355,6 +338,40 @@ def exec_agent():
     # arrows(init val 2)
     global arrows
     arrows = 2
+    # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch, visited]
+    # [0, 1, 2, 3, 4, 5, 6, 7]
+    global agent_map
+    # chk data
+    print(now_pos)
+    print(agent_map[now_pos[0]][now_pos[1]])
+
+    # chk bump
+    can_forward = [0, 0, 0, 0]
+    # chk can forward east
+    if agent_map[now_pos[0] + 1][now_pos[1]][3] != 1 and agent_map[now_pos[0] + 1][now_pos[1]][5] != 1 and agent_map[now_pos[0] + 1][now_pos[1]][6] != 1:
+        can_forward[0] = 1
+    
+    # chk can forward north
+    if agent_map[now_pos[0]][now_pos[1] + 1][3] != 1 and agent_map[now_pos[0]][now_pos[1] + 1][5] != 1 and agent_map[now_pos[0]][now_pos[1] + 1][6] != 1:
+        can_forward[1] = 2
+        
+    # chk can forward west
+    if agent_map[now_pos[0] - 1][now_pos[1]][3] != 1 and agent_map[now_pos[0] - 1][now_pos[1]][5] != 1 and agent_map[now_pos[0] - 1][now_pos[1]][6] != 1:
+        can_forward[2] = 3
+    
+    # chk can forward south
+    if agent_map[now_pos[0]][now_pos[1] - 1][3] != 1 and agent_map[now_pos[0]][now_pos[1] - 1][5] != 1 and agent_map[now_pos[0]][now_pos[1] - 1][6] != 1:
+        can_forward[3] = 4
+    print(can_forward)
+
+    forward_choice = 0
+    while forward_choice == 0:
+        forward_choice = random.sample(can_forward, 1)
+        forward_choice = forward_choice[0]
+
+    for_return = []
+
+
 #########################################################################
 #                   _          ____      _      _                       #
 #                  / \__/|    /  _ \    / \    / \  /|                  #
@@ -382,7 +399,7 @@ if __name__ == "__main__":
     while True:
         print(f"--------------------------------------\ninput test value\n[0] now position\n[1] show cave map\n[2] turn left")
         print(f"[3] turn right\n[4] go forward\n[5] grab the gold\n[6] shoot\n[7] show agent map")
-        print(f"[8] climb")
+        print(f"[8] climb\n[9] execute agent")
         match int(input()):
             case 0:
                 print(f"{now_pos[0]}, {now_pos[1]}, {cave_map[now_pos[1]][now_pos[0]]}")
@@ -427,3 +444,5 @@ if __name__ == "__main__":
                     print()
             case 8:
                 climb()
+            case 9:
+                exec_agent()
