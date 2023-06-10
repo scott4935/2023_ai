@@ -208,20 +208,20 @@ def shoot():
             case 3:
                 # y, x
                 print(f"in case 3\n{cave_map[now_pos[1] - 1][now_pos[0]][5]}")
-                if cave_map[now_pos[0] - 1][now_pos[1]][5] == 1:
-                    cave_map[now_pos[0] - 1][now_pos[1]][5] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] + 1][0] = 0
-                    cave_map[now_pos[0] - 1 + 1][now_pos[1]][0] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] - 1][0] = 0
-                    cave_map[now_pos[0] - 1 - 1][now_pos[1]][0] = 0
-                    if cave_map[now_pos[0] - 1][now_pos[1] + 1][3] != 1:
-                        cave_map[now_pos[0] - 1][now_pos[1] + 1][4] = 1
-                    if cave_map[now_pos[0] - 1 + 1][now_pos[1]][3] != 1:
-                        cave_map[now_pos[0] - 1 + 1][now_pos[1]][4] = 1
-                    if cave_map[now_pos[0] - 1][now_pos[1] - 1][3] != 1:
-                        cave_map[now_pos[0] - 1][now_pos[1] - 1][4] = 1
-                    if cave_map[now_pos[0] - 1 - 1][now_pos[1]][3] != 1:
-                        cave_map[now_pos[0] - 1 - 1][now_pos[1]][4] = 1 
+                if cave_map[now_pos[1] - 1][now_pos[0]][5] == 1:
+                    cave_map[now_pos[1] - 1][now_pos[0]][5] = 0
+                    cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1] - 1 + 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
+                    cave_map[now_pos[1] - 1 - 1][now_pos[0]][0] = 0
+                    if cave_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1] - 1 + 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] - 1 + 1][now_pos[0]][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
+                    if cave_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1 
 def climb():
     global now_pos
     global hold_gold
@@ -345,22 +345,24 @@ def exec_agent():
     print(now_pos)
     print(agent_map[now_pos[0]][now_pos[1]])
 
+    for_return.append(now_pos)
+    print(for_return)
     # chk bump
     can_forward = [0, 0, 0, 0]
     # chk can forward east
-    if agent_map[now_pos[0] + 1][now_pos[1]][3] != 1 and agent_map[now_pos[0] + 1][now_pos[1]][5] != 1 and agent_map[now_pos[0] + 1][now_pos[1]][6] != 1:
+    if agent_map[now_pos[1] + 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1:
         can_forward[0] = 1
     
     # chk can forward north
-    if agent_map[now_pos[0]][now_pos[1] + 1][3] != 1 and agent_map[now_pos[0]][now_pos[1] + 1][5] != 1 and agent_map[now_pos[0]][now_pos[1] + 1][6] != 1:
+    if agent_map[now_pos[1]][now_pos[0] + 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1:
         can_forward[1] = 2
         
     # chk can forward west
-    if agent_map[now_pos[0] - 1][now_pos[1]][3] != 1 and agent_map[now_pos[0] - 1][now_pos[1]][5] != 1 and agent_map[now_pos[0] - 1][now_pos[1]][6] != 1:
+    if agent_map[now_pos[1] - 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1:
         can_forward[2] = 3
     
     # chk can forward south
-    if agent_map[now_pos[0]][now_pos[1] - 1][3] != 1 and agent_map[now_pos[0]][now_pos[1] - 1][5] != 1 and agent_map[now_pos[0]][now_pos[1] - 1][6] != 1:
+    if agent_map[now_pos[1]][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1:
         can_forward[3] = 4
     print(can_forward)
 
@@ -369,7 +371,17 @@ def exec_agent():
         forward_choice = random.sample(can_forward, 1)
         forward_choice = forward_choice[0]
 
-    for_return = []
+    print(forward_choice)
+
+    match forward_choice:
+        case 1:
+            go_east()
+        case 2:
+            go_north()
+        case 3:
+            go_west()
+        case 4:
+            go_south()
 
 
 #########################################################################
@@ -395,6 +407,9 @@ if __name__ == "__main__":
     # arrows(init val 2)
     global arrows
     arrows = 2
+    # return queue
+    global for_return
+    for_return = []
     # chk map and position ... etc
     while True:
         print(f"--------------------------------------\ninput test value\n[0] now position\n[1] show cave map\n[2] turn left")
