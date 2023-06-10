@@ -28,4 +28,5 @@ class Wumpus(Resource):
             res['act_list'].append('turn_right')
         
         #exec_agent(res)
+        
         return jsonify(res = res)
