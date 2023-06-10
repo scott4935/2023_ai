@@ -53,6 +53,7 @@ def go_forward():
         print("u r dead....start with new agent")
         now_pos = [1,1]
         direction = [1, 0, 0, 0]
+        return 1
     else:
         for _ in range(7):
             agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
@@ -64,17 +65,17 @@ def go_east():
     global direction
     match direction.index(1):
         case 0:
-            go_forward()
+            test = go_forward()
         case 1:
             turn_right()
-            go_forward()
+            test = go_forward()
         case 2:
             while direction.index(1) != 0:
                 turn_right()
-            go_forward()
+            test = go_forward()
         case 3:
             turn_left()
-            go_forward()
+            test = go_forward()
 
 
 def go_north():
@@ -343,45 +344,72 @@ def exec_agent():
     global agent_map
     # chk data
     print(now_pos)
+    test = now_pos
     print(agent_map[now_pos[0]][now_pos[1]])
 
-    for_return.append(now_pos)
-    print(for_return)
-    # chk bump
-    can_forward = [0, 0, 0, 0]
-    # chk can forward east
-    if agent_map[now_pos[1] + 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1:
-        can_forward[0] = 1
-    
-    # chk can forward north
-    if agent_map[now_pos[1]][now_pos[0] + 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1:
-        can_forward[1] = 2
+    # return queue
+    for_return = []
+    while True:
+        for_return.append(now_pos)
+        print(for_return)
+        # chk bump
+        can_forward_visited = [0, 0, 0, 0]
+        can_forward_not_visited = [0, 0, 0, 0]
+        # chk can forward east
+        if agent_map[now_pos[1] + 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1:
+            if agent_map[now_pos[1] + 1][now_pos[0]][7] == 1:
+                can_forward_visited[1] = 2
+            elif agent_map[now_pos[1] + 1][now_pos[0]][7] == 0:
+                can_forward_not_visited[1] = 2
         
-    # chk can forward west
-    if agent_map[now_pos[1] - 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1:
-        can_forward[2] = 3
-    
-    # chk can forward south
-    if agent_map[now_pos[1]][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1:
-        can_forward[3] = 4
-    print(can_forward)
+        # chk can forward north
+        if agent_map[now_pos[1]][now_pos[0] + 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1:
+            if agent_map[now_pos[1]][now_pos[0] + 1][7] == 1:
+                can_forward_visited[0] = 1
+            elif agent_map[now_pos[1]][now_pos[0] + 1][7] == 0:
+                can_forward_not_visited[0] = 1
+            
+        # chk can forward west
+        if agent_map[now_pos[1] - 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1:
+            if agent_map[now_pos[1] - 1][now_pos[0]][7] == 1:
+                can_forward_visited[3] = 4
+            elif agent_map[now_pos[1] - 1][now_pos[0]][7] == 0:
+                can_forward_not_visited[3] = 4
+        
+        # chk can forward south
+        if agent_map[now_pos[1]][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1:
+            if agent_map[now_pos[1]][now_pos[0] - 1][7] == 1:
+                can_forward_visited[2] = 3
+            elif agent_map[now_pos[1]][now_pos[0] - 1][7] == 0:
+                can_forward_not_visited[2] = 3
 
-    forward_choice = 0
-    while forward_choice == 0:
-        forward_choice = random.sample(can_forward, 1)
-        forward_choice = forward_choice[0]
+        print(can_forward_visited)
+        print(can_forward_not_visited)
+        forward_choice = 0
 
-    print(forward_choice)
+        not_visit_cnt = can_forward_not_visited.count(0)
+        if not_visit_cnt != 4:
+            while forward_choice == 0:
+                forward_choice = random.sample(can_forward_not_visited, 1)
+                forward_choice = forward_choice[0]
+        else:
+            while forward_choice == 0:
+                forward_choice = random.sample(can_forward_visited, 1)
+                forward_choice = forward_choice[0]
 
-    match forward_choice:
-        case 1:
-            go_east()
-        case 2:
-            go_north()
-        case 3:
-            go_west()
-        case 4:
-            go_south()
+        print(forward_choice)
+
+        match forward_choice:
+            case 1:
+                go_east()
+            case 2:
+                go_north()
+            case 3:
+                go_west()
+            case 4:
+                go_south()
+
+        input()
 
 
 #########################################################################
@@ -407,9 +435,6 @@ if __name__ == "__main__":
     # arrows(init val 2)
     global arrows
     arrows = 2
-    # return queue
-    global for_return
-    for_return = []
     # chk map and position ... etc
     while True:
         print(f"--------------------------------------\ninput test value\n[0] now position\n[1] show cave map\n[2] turn left")

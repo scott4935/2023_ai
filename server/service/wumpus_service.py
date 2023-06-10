@@ -1,19 +1,6 @@
 import random # for random action e.g.) gold, wumpus, pitch ...
 
 #########################################################################
-#                            _  __       ____                           #
-#                           / |/ /      /  __\                          #
-#                           |   /       | | //                          #
-#                           |   \       | |_\\                          #
-#                           \_|\_\      \____/                          #
-#                                                                       #
-#########################################################################
-
-def KB(code, *args):
-    print(f"test")
-
-
-#########################################################################
 #               ____    ____    _____    _    ____    _                 #
 #              /  _ \  /   _\  /__ __\  / \  /  _ \  / \  /|            #
 #              | / \|  |  /      / \    | |  | / \|  | |\ ||            #
@@ -223,20 +210,20 @@ def shoot():
             case 3:
                 # y, x
                 print(f"in case 3\n{cave_map[now_pos[1] - 1][now_pos[0]][5]}")
-                if cave_map[now_pos[0] - 1][now_pos[1]][5] == 1:
-                    cave_map[now_pos[0] - 1][now_pos[1]][5] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] + 1][0] = 0
-                    cave_map[now_pos[0] - 1 + 1][now_pos[1]][0] = 0
-                    cave_map[now_pos[0] - 1][now_pos[1] - 1][0] = 0
-                    cave_map[now_pos[0] - 1 - 1][now_pos[1]][0] = 0
-                    if cave_map[now_pos[0] - 1][now_pos[1] + 1][3] != 1:
-                        cave_map[now_pos[0] - 1][now_pos[1] + 1][4] = 1
-                    if cave_map[now_pos[0] - 1 + 1][now_pos[1]][3] != 1:
-                        cave_map[now_pos[0] - 1 + 1][now_pos[1]][4] = 1
-                    if cave_map[now_pos[0] - 1][now_pos[1] - 1][3] != 1:
-                        cave_map[now_pos[0] - 1][now_pos[1] - 1][4] = 1
-                    if cave_map[now_pos[0] - 1 - 1][now_pos[1]][3] != 1:
-                        cave_map[now_pos[0] - 1 - 1][now_pos[1]][4] = 1 
+                if cave_map[now_pos[1] - 1][now_pos[0]][5] == 1:
+                    cave_map[now_pos[1] - 1][now_pos[0]][5] = 0
+                    cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
+                    cave_map[now_pos[1] - 1 + 1][now_pos[0]][0] = 0
+                    cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
+                    cave_map[now_pos[1] - 1 - 1][now_pos[0]][0] = 0
+                    if cave_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1] - 1 + 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] - 1 + 1][now_pos[0]][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
+                    if cave_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1 
 def climb():
     global now_pos
     global hold_gold
@@ -354,6 +341,101 @@ def new_setting():
 
     return settings
 
+
+#########################################################################
+#                    ____  _____ _____ _      _____                     #
+#                   /  _ \/  __//  __// \  /|/__ __\                    #
+#                   | / \|| |  _|  \  | |\ ||  / \                      #
+#                   | |-||| |_//|  /_ | | \||  | |                      #
+#                   \_/ \|\____\\____\\_/  \|  \_/                      #
+#                                                                       #
+#########################################################################
+
+def exec_agent():
+    # position value of agent
+    global now_pos
+    # now_pos = [1,1]
+    # does the agent hold gold
+    global hold_gold
+    hold_gold = 0
+    # dirction[E, N, W, S]
+    global direction
+    direction = [1, 0, 0, 0]
+    # arrows(init val 2)
+    global arrows
+    arrows = 2
+    # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch, visited]
+    # [0, 1, 2, 3, 4, 5, 6, 7]
+    global agent_map
+    # chk data
+    print(now_pos)
+    test = now_pos
+    print(agent_map[now_pos[0]][now_pos[1]])
+
+    # return queue
+    for_return = []
+    while True:
+        for_return.append(now_pos)
+        print(for_return)
+        # chk bump
+        can_forward_visited = [0, 0, 0, 0]
+        can_forward_not_visited = [0, 0, 0, 0]
+        # chk can forward east
+        if agent_map[now_pos[1] + 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1:
+            if agent_map[now_pos[1] + 1][now_pos[0]][7] == 1:
+                can_forward_visited[1] = 2
+            elif agent_map[now_pos[1] + 1][now_pos[0]][7] == 0:
+                can_forward_not_visited[1] = 2
+        
+        # chk can forward north
+        if agent_map[now_pos[1]][now_pos[0] + 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1:
+            if agent_map[now_pos[1]][now_pos[0] + 1][7] == 1:
+                can_forward_visited[0] = 1
+            elif agent_map[now_pos[1]][now_pos[0] + 1][7] == 0:
+                can_forward_not_visited[0] = 1
+            
+        # chk can forward west
+        if agent_map[now_pos[1] - 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1:
+            if agent_map[now_pos[1] - 1][now_pos[0]][7] == 1:
+                can_forward_visited[3] = 4
+            elif agent_map[now_pos[1] - 1][now_pos[0]][7] == 0:
+                can_forward_not_visited[3] = 4
+        
+        # chk can forward south
+        if agent_map[now_pos[1]][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1:
+            if agent_map[now_pos[1]][now_pos[0] - 1][7] == 1:
+                can_forward_visited[2] = 3
+            elif agent_map[now_pos[1]][now_pos[0] - 1][7] == 0:
+                can_forward_not_visited[2] = 3
+
+        print(can_forward_visited)
+        print(can_forward_not_visited)
+        forward_choice = 0
+
+        not_visit_cnt = can_forward_not_visited.count(0)
+        if not_visit_cnt != 4:
+            while forward_choice == 0:
+                forward_choice = random.sample(can_forward_not_visited, 1)
+                forward_choice = forward_choice[0]
+        else:
+            while forward_choice == 0:
+                forward_choice = random.sample(can_forward_visited, 1)
+                forward_choice = forward_choice[0]
+
+        print(forward_choice)
+
+        match forward_choice:
+            case 1:
+                go_east()
+            case 2:
+                go_north()
+            case 3:
+                go_west()
+            case 4:
+                go_south()
+
+        input()
+
 #########################################################################
 #                   _          ____      _      _                       #
 #                  / \__/|    /  _ \    / \    / \  /|                  #
@@ -381,7 +463,7 @@ if __name__ == "__main__":
     while True:
         print(f"--------------------------------------\ninput test value\n[0] now position\n[1] show cave map\n[2] turn left")
         print(f"[3] turn right\n[4] go forward\n[5] grab the gold\n[6] shoot\n[7] show agent map")
-        print(f"[8] climb")
+        print(f"[8] climb\n[9] execute agent")
         match int(input()):
             case 0:
                 print(f"{now_pos[0]}, {now_pos[1]}, {cave_map[now_pos[1]][now_pos[0]]}")
@@ -426,3 +508,5 @@ if __name__ == "__main__":
                     print()
             case 8:
                 climb()
+            case 9:
+                exec_agent()
