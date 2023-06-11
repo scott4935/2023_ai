@@ -1,15 +1,3 @@
-/* .all {
-  background-image: url("background.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-} */
-
-.action {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .elements {
   justify-content: center;
   align-items: center;
