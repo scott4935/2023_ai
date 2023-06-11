@@ -71,72 +71,6 @@ def go_forward(now_pos, direction):
         dead = 0
     return now_pos, direction, agent_map, dead
 
-
-""" def go_east(now_pos, direction):
-    # dirction[E, N, W, S]
-    match direction.index(1):
-        case 0:
-            go_forward(now_pos, direction)
-        case 1:
-            turn_right(direction)
-            go_forward(now_pos, direction)
-        case 2:
-            while direction.index(1) != 0:
-                turn_right(direction)
-            go_forward(now_pos, direction)
-        case 3:
-            turn_left(direction)
-            go_forward(now_pos, direction)
-
-
-def go_north(now_pos, direction):
-    # dirction[E, N, W, S]
-    match direction.index(1):
-        case 0:
-            turn_left(direction)
-            go_forward(now_pos, direction)
-        case 1:
-            go_forward(now_pos, direction)
-        case 2:
-            turn_right(direction)
-            go_forward(now_pos, direction)
-        case 3:
-            while direction.index(1) != 1:
-                turn_left(direction)
-            go_forward(now_pos, direction)
-
-def go_west(now_pos, direction):
-    # dirction[E, N, W, S]
-    match direction.index(1):
-        case 0:
-            while direction.index(1) != 2:
-                turn_left(direction)
-            go_forward(now_pos, direction)
-        case 1:
-            turn_left(direction)
-            go_forward(now_pos, direction)
-        case 2:
-            go_forward(now_pos, direction)
-        case 3:
-            turn_right(direction)
-            go_forward(now_pos, direction)
-
-def go_south(now_pos, direction):
-    # dirction[E, N, W, S]
-    match direction.index(1):
-        case 0:
-            turn_right(direction)
-            go_forward(now_pos, direction)
-        case 1:
-            while direction.index(1) != 3:
-                turn_right(direction)
-            go_forward(now_pos, direction)
-        case 2:
-            turn_left(direction)
-            go_forward(now_pos, direction)
-        case 3:
-            go_forward(now_pos, direction) """
-
 # grab the gold
 def grab(now_pos):
     # reversed x,y ..... i cant know reason
@@ -395,16 +329,6 @@ def new_setting():
 #########################################################################
 
 def exec_agent(res):
-
-
-    """ result format
-    res['now_pos'] = now_pos
-    res['hold_gold'] = hold_gold
-    res['direction'] = direction
-    res['agent_map'] = agent_map
-    res['arrows'] = arrows
-    res['act_list'] = []
-    """
     now_pos = res['now_pos']
     hold_gold = res['hold_gold']
     direction = res['direction']
@@ -421,7 +345,30 @@ def exec_agent(res):
     dead = 0
 
     if hold_gold == 1:
-        print("return")
+        if (now_pos == for_return[-1]):
+            for_return.pop()
+        #dirction[E, N, W, S]
+        if(now_pos[0] > for_return[-1][0]):
+            if(direction != [0, 0, 1, 0]):
+                direction = turn_left(direction)
+            else:
+                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+        elif(now_pos[1] > for_return[-1][1]):
+            if(direction != [0, 0, 0, 1]):
+                direction = turn_right(direction)
+            else:
+                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+        elif(now_pos[0] < for_return[-1][0]):
+            if(direction != [1, 0, 0, 0]):
+                direction = turn_left(direction)
+            else:
+                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+        elif(now_pos[1] < for_return[-1][1]):
+            if(direction != [0, 1, 0, 0]):
+                direction = turn_left(direction)
+            else:
+                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+
     elif hold_gold != 1:
         if agent_map[now_pos[1]][now_pos[0]][2] == 1:
             hold_gold = grab(now_pos)
@@ -534,9 +481,8 @@ def exec_agent(res):
                     for _ in range(7):
                         agent_map[j][k][_] = cave_map[j][k][_]
     else:
-        if for_return[-1] != now_pos:
+        if for_return[-1] != now_pos and hold_gold == 0:
             for_return.append([now_pos[0], now_pos[1]])
-    print(f'{for_return}')
 
     res['now_pos'] = now_pos
     res['hold_gold'] = hold_gold
