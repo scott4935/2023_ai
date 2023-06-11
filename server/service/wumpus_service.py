@@ -473,7 +473,6 @@ def exec_agent(res):
 
     if dead == 1:
         for_return = [[1,1]]
-        global cave_map
         global temp_map
         cave_map = temp_map
         for j in range(6):
