@@ -482,7 +482,7 @@ def exec_agent(res):
                 match direction.index(1):
                     case 0:
                         print("5")
-                        if agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1:
+                        if agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][3] != 1:
                             now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
                         elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
                             shoot(now_pos, direction, arrows)
@@ -490,7 +490,7 @@ def exec_agent(res):
                             direction = turn_right(direction)
                     case 1:
                         print("6")
-                        if agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1:
+                        if agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][3] != 1:
                             now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
                         elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
                             shoot(now_pos, direction, arrows)
@@ -498,7 +498,7 @@ def exec_agent(res):
                             direction = turn_right(direction)
                     case 2:
                         print("7")
-                        if agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1:
+                        if agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][3] != 1:
                             now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
                         elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
                             shoot(now_pos, direction, arrows)
@@ -506,7 +506,7 @@ def exec_agent(res):
                             direction = turn_right(direction)
                     case 3:
                         print("8")
-                        if agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1:
+                        if agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][3] != 1:
                             now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
                         elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
                             shoot(now_pos, direction, arrows)
