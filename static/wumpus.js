@@ -5,7 +5,9 @@ function main(data) {
     var agentDirection = data.res.direction;
     var agentGold = data.res.hold_gold;
     var agentArrows = data.res.arrows;
+    var actList = data.res.act_list;
 
+    // 기존 테이블을 삭제한다.
     var tableContainer = document.querySelector(".table-container");
     while(tableContainer.hasChildNodes()) {
       tableContainer.removeChild(tableContainer.firstChild);
@@ -20,6 +22,13 @@ function main(data) {
     gold.textContent = agentGold;
     arrows.textContent = agentArrows;
 
+    // 승리조건
+    if(agentGold===1 && agentPosition[0]===1 && agentPosition[1]===1) {
+      isEnd=1;
+      console.log("YOU WIN");
+    }
+
+    // 테이블 생성
     for (var i = 4; i >= 1; i--) { // table row
         var row = document.createElement("tr");
 
@@ -80,6 +89,15 @@ function main(data) {
         table.appendChild(row);
     }
     tableContainer.appendChild(table);
+
+    // act-list
+    var acts = document.createElement("ul");
+    for(var i=0; i<actList.length; i++) {
+      var listItem = document.createElement('li');
+      listItem.textContent = actList[i];
+      acts.appendChild(listItem);
+    }
+    tableContainer.appendChild(acts);
 }
 
 
@@ -97,13 +115,11 @@ class Observer { // 상태를 갖는 객체
       });
   }
 
-  sendPostRequest(action) {
-    this.staticData.res.action=action;
-
+  sendPostRequest() {
     fetch('http://localhost:5000/wumpus', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(this.staticData)
     })
@@ -111,22 +127,17 @@ class Observer { // 상태를 갖는 객체
     .then(data => {
       this.staticData = data; // POST response를 저장
       main(this.staticData);
-      console.log(this.staticData);
+      console.log(this.staticData); // response 확인 용도
     });
   }
 }
 
 const observer = new Observer();
-console.log(observer.staticData);
+var isEnd=0;
 
-document.querySelector("#go-forward").addEventListener("click", function() {
-  observer.sendPostRequest(0); // 객체에 저장된 상태를 통해 POST 요청 send.
-})
+var intervalId = setInterval(checkAndSendPost, 1000); // 1초마다 POST request
 
-document.querySelector("#turn-left").addEventListener("click", function() {
-  observer.sendPostRequest(1);
-})
-
-document.querySelector("#turn-right").addEventListener("click", function() {
-  observer.sendPostRequest(2);
-})
+function checkAndSendPost() { // 승리조건 만족 시 종료
+  if(isEnd === 1) clearInterval(intervalId);
+  else observer.sendPostRequest();
+}
