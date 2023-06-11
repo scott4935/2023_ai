@@ -492,6 +492,7 @@ def exec_agent(res):
     res['arrows'] = arrows
     res['act_list'] = act_list
     res['for_return'] = for_return
+    res['cave_map'] = cave_map
 
     return res
     ###############################
