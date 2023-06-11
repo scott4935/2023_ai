@@ -80,9 +80,8 @@ def grab(now_pos):
         return 1
 
 # shoot arrow
-def shoot(now_pos, direction, arrows):
+def shoot(now_pos, direction, arrows, cave_map):
     # dirction[E, N, W, S]
-    global cave_map
     # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch]
     # [0, 1, 2, 3, 4, 5, 6]
     print(arrows)
@@ -308,6 +307,7 @@ def new_setting():
     for_return = [[1,1]]
 
     res = {}
+    res['cave_map'] = cave_map
     res['for_return'] = for_return
     res['now_pos'] = now_pos
     res['hold_gold'] = hold_gold
@@ -336,6 +336,7 @@ def exec_agent(res):
     arrows = res['arrows']
     act_list = res['act_list']
     for_return = res['for_return']
+    cave_map = res['cave_map']
 
     #################################
     ## 여기에 프론트에서 data 받아옴 ##
@@ -396,7 +397,7 @@ def exec_agent(res):
                         if agent_map[now_pos[1]][now_pos[0] + 1][7] == 0:
                             now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
                         elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
-                            shoot(now_pos, direction, arrows)
+                            shoot(now_pos, direction, arrows, cave_map)
                         else:
                             direction = turn_right(direction)
                     case 1:
@@ -404,7 +405,7 @@ def exec_agent(res):
                         if agent_map[now_pos[1] + 1][now_pos[0]][7] == 0:
                             now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
                         elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
-                            shoot(now_pos, direction, arrows)
+                            shoot(now_pos, direction, arrows, cave_map)
                         else:
                             direction = turn_right(direction)
                     case 2:
@@ -412,7 +413,7 @@ def exec_agent(res):
                         if agent_map[now_pos[1]][now_pos[0] - 1][7] == 0:
                             now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
                         elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
-                            shoot(now_pos, direction, arrows)
+                            shoot(now_pos, direction, arrows, cave_map)
                         else:
                             direction = turn_right(direction)
                     case 3:
@@ -420,7 +421,7 @@ def exec_agent(res):
                         if agent_map[now_pos[1] - 1][now_pos[0]][7] == 0:
                             now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
                         elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
-                            shoot(now_pos, direction, arrows)
+                            shoot(now_pos, direction, arrows, cave_map)
                         else:
                             direction = turn_right(direction)
             elif agent_map[now_pos[1] + y][now_pos[0] + x][7] == 1 and agent_map[now_pos[1] + y][now_pos[0] + x][5] == 0 and agent_map[now_pos[1] + y][now_pos[0] + x][6] == 0 and agent_map[now_pos[1] + y][now_pos[0] + x][3] == 0:
