@@ -257,18 +257,18 @@ def shoot(now_pos, direction, arrows):
                     cave_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1
 
                     agent_map[now_pos[1] - 1][now_pos[0]][5] = 0
-                    if cave_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
-                        cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
-                        cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
-                    if cave_map[now_pos[1] - 1 + 1][now_pos[0]][3] != 1:
-                        cave_map[now_pos[1] - 1 + 1][now_pos[0]][0] = 0
-                        cave_map[now_pos[1] - 1 + 1][now_pos[0]][4] = 1
-                    if cave_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
-                        cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
-                        cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
-                    if cave_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1:
-                        cave_map[now_pos[1] - 1 - 1][now_pos[0]][0] = 0
-                        cave_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1
+                    if agent_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                        agent_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
+                        agent_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
+                    if agent_map[now_pos[1] - 1 + 1][now_pos[0]][3] != 1:
+                        agent_map[now_pos[1] - 1 + 1][now_pos[0]][0] = 0
+                        agent_map[now_pos[1] - 1 + 1][now_pos[0]][4] = 1
+                    if agent_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                        agent_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
+                        agent_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
+                    if agent_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1:
+                        agent_map[now_pos[1] - 1 - 1][now_pos[0]][0] = 0
+                        agent_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1
 
 
 def climb(now_pos):
