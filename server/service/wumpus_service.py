@@ -32,7 +32,44 @@ def KB(now_pos, agent_map, direction, arrows):
     elif x == 0 and y != 0:
         if agent_map[now_pos[1] + y][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1] + y][now_pos[0] + 1][6] == 1 or (agent_map[now_pos[1] + y][now_pos[0] + 1][5] == 1 and arrows != 0):
             if agent_map[now_pos[1] + y][now_pos[0] - 1][3] == 1 or agent_map[now_pos[1] + y][now_pos[0] - 1][6] == 1 or (agent_map[now_pos[1] + y][now_pos[0] - 1][5] == 1 and arrows == 0):
+                if agent_map[now_pos[1] + (y * 2)][now_pos[0]][3] == 1 or agent_map[now_pos[1] + (y * 2)][now_pos[0]][6] == 1 or (agent_map[now_pos[1] + (y * 2)][now_pos[0]][5] == 1 and arrows == 0):
+                    return 0
+                elif agent_map[now_pos[1] + (y * 2)][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1] + (y * 2)][now_pos[0] + 1][6] == 1 or (agent_map[now_pos[1] + (y * 2)][now_pos[0] + 1][5] == 1 and arrows != 0):
+                    if agent_map[now_pos[1] + (y * 2)][now_pos[0] - 1][3] == 1 or agent_map[now_pos[1] + (y * 2)][now_pos[0] - 1][6] == 1 or (agent_map[now_pos[1] + (y * 2)][now_pos[0] - 1][5] == 1 and arrows == 0):
+                        if agent_map[now_pos[1] + (y * 3)][now_pos[0]][3] == 1 or agent_map[now_pos[1] + (y * 3)][now_pos[0]][6] == 1 or (agent_map[now_pos[1] + (y * 3)][now_pos[0]][5] == 1 and arrows == 0):
+                            return 0
+                        elif agent_map[now_pos[1] + (y * 3)][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1] + (y * 3)][now_pos[0] + 1][6] == 1 or (agent_map[now_pos[1] + (y * 3)][now_pos[0] + 1][5] == 1 and arrows != 0):
+                            if agent_map[now_pos[1] + (y * 3)][now_pos[0] - 1][3] == 1 or agent_map[now_pos[1] + (y * 3)][now_pos[0] - 1][6] == 1 or (agent_map[now_pos[1] + (y * 3)][now_pos[0] - 1][5] == 1 and arrows == 0):
+                                if agent_map[now_pos[1] + (y * 4)][now_pos[0]][3] == 1 or agent_map[now_pos[1] + (y * 4)][now_pos[0]][6] == 1 or (agent_map[now_pos[1] + (y * 4)][now_pos[0]][5] == 1 and arrows == 0):
+                                    return 0
+    
+    if agent_map[now_pos[1] + y][now_pos[0] + x][7] == 0:
+        # stench
+        if agent_map[now_pos[1]][now_pos[0]][0] == 1:
+            if y != 0:
+                if agent_map[now_pos[1] - y][now_pos[0]][7] == 1 and agent_map[now_pos[1]][now_pos[0] + 1][7] == 1 and agent_map[now_pos[1]][now_pos[0] - 1][7] == 1:
+                    if (agent_map[now_pos[1] - y][now_pos[0]][5] == 0 or agent_map[now_pos[1] - y][now_pos[0]][3] == 1) and (agent_map[now_pos[1]][now_pos[0] + 1][5] == 0 or agent_map[now_pos[1]][now_pos[0] + 1][3] == 1) and (agent_map[now_pos[1]][now_pos[0] - 1][5] == 0 or agent_map[now_pos[1]][now_pos[0] - 1][3] == 1):
+                        print("KB case0")
+                        return 0
+            elif x != 0:
+                if agent_map[now_pos[1]][now_pos[0] - x][7] == 1 and agent_map[now_pos[1] + 1][now_pos[0]][7] == 1 and agent_map[now_pos[1] - 1][now_pos[0]][7] == 1:
+                    if (agent_map[now_pos[1]][now_pos[0] - x][5] == 0 or agent_map[now_pos[1]][now_pos[0] - x][3] == 1) and (agent_map[now_pos[1] + 1][now_pos[0]][5] == 0 or agent_map[now_pos[1] + 1][now_pos[0]][3] == 1) and (agent_map[now_pos[1] - 1][now_pos[0]][5] == 0 or agent_map[now_pos[1] - 1][now_pos[0]][3] == 1):
+                        print("KB case1")
+                        return 0
+        # breeze                            
+        if agent_map[now_pos[1]][now_pos[0]][1] == 1:
+            if y != 0:
+                if agent_map[now_pos[1] - y][now_pos[0]][7] == 1 and agent_map[now_pos[1]][now_pos[0] + 1][7] == 1 and agent_map[now_pos[1]][now_pos[0] - 1][7] == 1:
+                    if (agent_map[now_pos[1] - y][now_pos[0]][6] == 0 or agent_map[now_pos[1] - y][now_pos[0]][3] == 1) and (agent_map[now_pos[1]][now_pos[0] + 1][6] == 0 or agent_map[now_pos[1]][now_pos[0] + 1][3] == 1) and (agent_map[now_pos[1]][now_pos[0] - 1][6] == 0 or agent_map[now_pos[1]][now_pos[0] - 1][3] == 1):
+                        print("KB case2")
+                        return 0
+            elif x != 0:
+                if agent_map[now_pos[1]][now_pos[0] - x][7] == 1 and agent_map[now_pos[1] + 1][now_pos[0]][7] == 1 and agent_map[now_pos[1] - 1][now_pos[0]][7] == 1:
+                    if (agent_map[now_pos[1]][now_pos[0] - x][6] == 0 or agent_map[now_pos[1]][now_pos[0] - x][3] == 1) and (agent_map[now_pos[1] + 1][now_pos[0]][6] == 0 or agent_map[now_pos[1] + 1][now_pos[0]][3] == 1) and (agent_map[now_pos[1] - 1][now_pos[0]][6] == 0 or agent_map[now_pos[1] - 1][now_pos[0]][3] == 1):
+                        print("KB case3")
+                        return 0
 
+    return 1
 
 
         
@@ -496,7 +533,7 @@ def exec_agent(res):
                         #elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
                         #    now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction, act_list = turn_right(direction, act_list)
+                            direction, act_list = turn_left(direction, act_list)
                     case 1:
                         print("2")
                         if agent_map[now_pos[1] + 1][now_pos[0]][7] == 0:
@@ -504,7 +541,7 @@ def exec_agent(res):
                         #elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
                         #     now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction, act_list = turn_right(direction, act_list)
+                            direction, act_list = turn_left(direction, act_list)
                     case 2:
                         print("3")
                         if agent_map[now_pos[1]][now_pos[0] - 1][7] == 0:
@@ -512,7 +549,7 @@ def exec_agent(res):
                         #elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
                         #    now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction, act_list = turn_right(direction, act_list)
+                            direction, act_list = turn_left(direction, act_list)
                     case 3:
                         print("4")
                         if agent_map[now_pos[1] - 1][now_pos[0]][7] == 0:
@@ -520,17 +557,19 @@ def exec_agent(res):
                         #elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
                         #     now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction, act_list = turn_right(direction, act_list)
+                            direction, act_list = turn_left(direction, act_list)
             elif agent_map[now_pos[1] + y][now_pos[0] + x][7] == 1 and agent_map[now_pos[1] + y][now_pos[0] + x][5] == 0 and agent_map[now_pos[1] + y][now_pos[0] + x][6] == 0 and agent_map[now_pos[1] + y][now_pos[0] + x][3] == 0:
                 now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
             elif agent_map[now_pos[1]][now_pos[0] + 1][7] == 1 and agent_map[now_pos[1] + 1][now_pos[0]][7] == 1 and agent_map[now_pos[1]][now_pos[0] - 1][7] == 1 and agent_map[now_pos[1] - 1][now_pos[0]][7] == 1:
                 match direction.index(1):
                     case 0:
                         print("5")
-                        if agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][3] != 1:
+                        if agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][3] != 1 and KB(now_pos, agent_map, direction, arrows):
                             now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
-                             now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
+                            now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
+                        elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
+                            direction, act_list = turn_left(direction, act_list)
                         else:
                             if (agent_map[now_pos[1]][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][6] == 1) and (agent_map[now_pos[1] + 1][now_pos[0]][6] == 1 or agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 or agent_map[now_pos[1] + 1][now_pos[0]][3] == 1):
                                 direction, act_list = turn_right(direction, act_list)
@@ -538,26 +577,35 @@ def exec_agent(res):
                                 direction, act_list = turn_left(direction, act_list)
                     case 1:
                         print("6")
-                        if agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][3] != 1:
+                        if agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][3] != 1 and KB(now_pos, agent_map, direction, arrows):
                             now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
-                             now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
+                            now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
+                        elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
+                            direction, act_list = turn_left(direction, act_list)
                         else:
                             direction, act_list = turn_right(direction, act_list)
                     case 2:
                         print("7")
-                        if agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][3] != 1:
+                        if agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][3] != 1 and KB(now_pos, agent_map, direction, arrows):
                             now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
                              now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
+                        elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
+                            direction, act_list = turn_left(direction, act_list)
+                        elif agent_map[now_pos[1] + 1][now_pos[0]][3] == 1 or agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 or agent_map[now_pos[1] + 1][now_pos[0]][6] == 1:
+                            if agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 or agent_map[now_pos[1]][now_pos[0] - 1][6] == 1 or agent_map[now_pos[1]][now_pos[0] - 1][3] == 1:
+                                direction, act_list = turn_left(direction, act_list)
                         else:
                             direction, act_list = turn_right(direction, act_list)
                     case 3:
                         print("8")
-                        if agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][3] != 1:
+                        if agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][3] != 1 and KB(now_pos, agent_map, direction, arrows):
                             now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
                              now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
+                        elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
+                            direction, act_list = turn_left(direction, act_list)
                         else:
                             if (agent_map[now_pos[1] - 1][now_pos[0]][3] == 1 or agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 or agent_map[now_pos[1] - 1][now_pos[0]][6] == 1) and (agent_map[now_pos[1]][now_pos[0] + 1][6] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][3] == 1):
                                 direction, act_list = turn_right(direction, act_list)
