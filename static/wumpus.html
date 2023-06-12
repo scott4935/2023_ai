@@ -29,11 +29,16 @@
         </div>
       </div>
 
-      <div class="table-container">
-        <div id="blank"></div>
-        <table id="table"></table>
-        <ul id="acts"></ul>
+      <div style="display: flex;  justify-content: space-evenly; align-items: center;">
+        <div style="width:200px"></div>
+        <div class="table-container">
+          <table id="table"></table>
+        </div>
+        <div class="act-container" style="overflow:auto; width:200px; height:300px;">
+          <ul id="acts"></ul>
+        </div>
       </div>
+
 
       <div class="ag-container">
         <div class="element-container">
@@ -43,6 +48,12 @@
           <img src="img/arrow.png"> <span id="hold_arrows"></span>
         </div>
       </div>
+    </div>
+
+    <div class="action">
+      <button id="reset">reset</button>
+      &nbsp;
+      <button id="start">start</button>
     </div>
 
     <div class="footer">

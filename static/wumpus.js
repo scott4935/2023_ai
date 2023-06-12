@@ -90,14 +90,28 @@ function main(data) {
     tableContainer.appendChild(table);
 
     // act-list
+    var actContainer = document.querySelector(".act-container");
+    while(actContainer.hasChildNodes()) {
+      actContainer.removeChild(actContainer.firstChild);
+    }
+
     var acts = document.createElement("ul");
     for(var i=0; i<actList.length; i++) {
       var listItem = document.createElement('li');
       listItem.textContent = actList[i];
       acts.appendChild(listItem);
     }
-    tableContainer.appendChild(acts);
+    actContainer.appendChild(acts);
 }
+
+// start & reset
+document.querySelector("#reset").addEventListener("click", function() {
+  isEnd = 0;
+  observer.sendGetRequest();
+})
+document.querySelector("#start").addEventListener("click", function() {
+  intervalId = setInterval(checkAndSendPost, 500); // 1초마다 POST request
+})
 
 
 class Observer { // 상태를 갖는 객체
@@ -129,12 +143,21 @@ class Observer { // 상태를 갖는 객체
       console.log(this.staticData); // response 확인 용도
     });
   }
+
+  sendGetRequest() {
+    fetch('http://localhost:5000/wumpus')
+      .then(response => response.json())
+      .then(data => {
+        this.staticData = data; // GET response를 staticData에 저장
+        console.log(this.staticData);
+        main(this.staticData);
+      });
+  }
 }
 
 const observer = new Observer();
 var isEnd=0;
-
-var intervalId = setInterval(checkAndSendPost, 500); // 1초마다 POST request
+var intervalId;
 
 function checkAndSendPost() { // 승리조건 만족 시 종료
   if(isEnd === 1) {
