@@ -10,22 +10,23 @@ import random # for random action e.g.) gold, wumpus, pitch ...
 #########################################################################
 
 # turn_left
-def turn_left(direction):
+def turn_left(direction, act_list):
     now_direction = direction.index(1)
     direction[now_direction] = 0
     direction[(now_direction + 1) % 4] = 1
-    return direction
+    act_list.append("turn_left")
+    return direction, act_list
 
 # turn_right
-def turn_right(direction):
+def turn_right(direction, act_list):
     now_direction = direction.index(1)
     direction[now_direction] = 0
     direction[now_direction - 1] = 1
-    return direction
+    act_list.append("turn_right")
+    return direction, act_list
 
 # go_forward / 0 == E, 1 == N, 2 == W, 3 == S
-def go_forward(now_pos, direction):
-    global agent_map
+def go_forward(now_pos, direction, agent_map, dead, cave_map, act_list):
     #global now_pos
     match direction.index(1):
         case 0:
@@ -56,31 +57,35 @@ def go_forward(now_pos, direction):
                 print(f"bumped out!")
                 agent_map[now_pos[1] - 1][now_pos[0]][3] = 1
                 agent_map[now_pos[1] - 1][now_pos[0]][7] = 1
-    if cave_map[now_pos[1]][now_pos[0]][5] == 1 or cave_map[now_pos[1]][now_pos[0]][6] == 1:
-        for _ in range(7):
-            agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
-            agent_map[now_pos[1]][now_pos[0]][7] = 1
+    act_list.append("go_forward")
+    for _ in range(7):
+        agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
+        agent_map[now_pos[1]][now_pos[0]][7] = 1
+    if agent_map[now_pos[1]][now_pos[0]][5] == 1 or agent_map[now_pos[1]][now_pos[0]][6] == 1:
+        if agent_map[now_pos[1]][now_pos[0]][5] == 1:
+            act_list.append("Dead by wumpus")
+        elif agent_map[now_pos[1]][now_pos[0]][6] == 1:
+            act_list.append("Dead by pitch")
         print("u r dead....start with new agent")
         now_pos = [1,1]
         direction = [1, 0, 0, 0]
         dead = 1
     else:
-        for _ in range(7):
-            agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
         agent_map[now_pos[1]][now_pos[0]][7] = 1
         dead = 0
-    return now_pos, direction, agent_map, dead
+    return now_pos, direction, agent_map, dead, cave_map, act_list
 
 # grab the gold
-def grab(now_pos):
+def grab(now_pos, act_list):
     # reversed x,y ..... i cant know reason
     print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[1]][now_pos[0]]}")
     if (cave_map[now_pos[1]][now_pos[0]][2] == 1):
         cave_map[now_pos[1]][now_pos[0]][2] = 0
-        return 1
+        act_list.append("grab")
+        return 1, act_list
 
 # shoot arrow
-def shoot(now_pos, direction, arrows, cave_map, agent_map):
+def shoot(now_pos, direction, arrows, cave_map, agent_map, act_list):
     # dirction[E, N, W, S]
     # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch]
     # [0, 1, 2, 3, 4, 5, 6]
@@ -95,27 +100,31 @@ def shoot(now_pos, direction, arrows, cave_map, agent_map):
                 print(f"in case 0\n{cave_map[now_pos[1]][now_pos[0] + 1][5]}")
                 if cave_map[now_pos[1]][now_pos[0] + 1][5] == 1:
                     cave_map[now_pos[1]][now_pos[0] + 1][5] = 0
-                    cave_map[now_pos[1]+ 1][now_pos[0] + 1][0] = 0
-                    cave_map[now_pos[1]+ 1][now_pos[0] + 1][4] = 1
-                    cave_map[now_pos[1]][now_pos[0] + 1 + 1][0] = 0
-                    cave_map[now_pos[1]][now_pos[0] + 1 + 1][4] = 1
-                    cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
-                    cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
-                    cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
-                    cave_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
+                    if cave_map[now_pos[1]+ 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1]+ 1][now_pos[0] + 1][0] = 0
+                        cave_map[now_pos[1]+ 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] + 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] + 1 + 1][0] = 0
+                        cave_map[now_pos[1]][now_pos[0] + 1 + 1][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
+                        cave_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
                     #..done
                     # set agent_map
                     agent_map[now_pos[1]][now_pos[0] + 1][5] = 0
-                    if agent_map[now_pos[1]+ 1][now_pos[0] + 1][7] == 1:
+                    if agent_map[now_pos[1]+ 1][now_pos[0] + 1][7] == 1 and agent_map[now_pos[1]+ 1][now_pos[0] + 1][3] != 1:
                         agent_map[now_pos[1]+ 1][now_pos[0] + 1][0] = 0
                         agent_map[now_pos[1]+ 1][now_pos[0] + 1][4] = 1                        
-                    if agent_map[now_pos[1]][now_pos[0] + 1 + 1][7] == 1:
+                    if agent_map[now_pos[1]][now_pos[0] + 1 + 1][7] == 1 and agent_map[now_pos[1]][now_pos[0] + 1 + 1][3] != 1:
                         agent_map[now_pos[1]][now_pos[0] + 1 + 1][0] = 0
                         agent_map[now_pos[1]][now_pos[0] + 1 + 1][4] = 1
-                    if agent_map[now_pos[1] - 1][now_pos[0] + 1][7] == 1:
+                    if agent_map[now_pos[1] - 1][now_pos[0] + 1][7] == 1 and agent_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
                         agent_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
                         agent_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1  
-                    if agent_map[now_pos[1]][now_pos[0] - 1 + 1][7] == 1:
+                    if agent_map[now_pos[1]][now_pos[0] - 1 + 1][7] == 1 and agent_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1:
                         agent_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
                         agent_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
 
@@ -124,26 +133,30 @@ def shoot(now_pos, direction, arrows, cave_map, agent_map):
                 print(f"in case 1\n{cave_map[now_pos[1] + 1][now_pos[0]][5]}")
                 if cave_map[now_pos[1] + 1][now_pos[0]][5] == 1:
                     cave_map[now_pos[1] + 1][now_pos[0]][5] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] + 1][4] = 1
-                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] + 1 + 1][now_pos[0]][4] = 1
-                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
-                    cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] + 1 - 1][now_pos[0]][4] = 1
+                    if cave_map[now_pos[1] + 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
+                        cave_map[now_pos[1] + 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1] + 1 + 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
+                        cave_map[now_pos[1] + 1 + 1][now_pos[0]][4] = 1
+                    if cave_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
+                    if cave_map[now_pos[1] + 1 - 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
+                        cave_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
+                        
                     #..done
                     agent_map[now_pos[1] + 1][now_pos[0]][5] = 0
-                    if agent_map[now_pos[1] + 1][now_pos[0] + 1][3] != 1:
+                    if agent_map[now_pos[1] + 1][now_pos[0] + 1][3] != 1 and agent_map[now_pos[1] + 1][now_pos[0] + 1][7] == 1:
                         agent_map[now_pos[1] + 1][now_pos[0] + 1][0] = 0
                         agent_map[now_pos[1] + 1][now_pos[0] + 1][4] = 1     
-                    if agent_map[now_pos[1] + 1 + 1][now_pos[0]][3] != 1:
+                    if agent_map[now_pos[1] + 1 + 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] + 1 + 1][now_pos[0]][7] == 1:
                         agent_map[now_pos[1] + 1 + 1][now_pos[0]][0] = 0
                         agent_map[now_pos[1] + 1 + 1][now_pos[0]][4] = 1 
-                    if agent_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1:
+                    if agent_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1] + 1][now_pos[0] - 1][7] == 1:
                         agent_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
                         agent_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
-                    if agent_map[now_pos[1] + 1 - 1][now_pos[0]][3] != 1:
+                    if agent_map[now_pos[1] + 1 - 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] + 1 - 1][now_pos[0]][7] == 1:
                         agent_map[now_pos[1] + 1 - 1][now_pos[0]][0] = 0
                         agent_map[now_pos[1] + 1 - 1][now_pos[0]][4] = 1 
 
@@ -152,26 +165,30 @@ def shoot(now_pos, direction, arrows, cave_map, agent_map):
                 print(f"in case 2\n{cave_map[now_pos[1]][now_pos[0] - 1][5]}")
                 if cave_map[now_pos[1]][now_pos[0] - 1][5] == 1: 
                     cave_map[now_pos[1]][now_pos[0] - 1][5] = 0
-                    cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
-                    cave_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
-                    cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
-                    cave_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
-                    cave_map[now_pos[1]][now_pos[0] - 1 - 1][0] = 0
-                    cave_map[now_pos[1]][now_pos[0] - 1 - 1][4] = 1
-                    cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
-                    cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
+                        cave_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1
+                    if cave_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
+                        cave_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
+                    if cave_map[now_pos[1]][now_pos[0] - 1 - 1][3] != 1:
+                        cave_map[now_pos[1]][now_pos[0] - 1 - 1][0] = 0
+                        cave_map[now_pos[1]][now_pos[0] - 1 - 1][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
+                        cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
 
                     agent_map[now_pos[1]][now_pos[0] - 1][5] = 0
-                    if agent_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1:
+                    if agent_map[now_pos[1]][now_pos[0] - 1 + 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] - 1 + 1][7] == 1:
                         agent_map[now_pos[1]][now_pos[0] - 1 + 1][0] = 0
                         agent_map[now_pos[1]][now_pos[0] - 1 + 1][4] = 1 
-                    if agent_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1:
+                    if agent_map[now_pos[1] + 1][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1] + 1][now_pos[0] - 1][7] == 1:
                         agent_map[now_pos[1] + 1][now_pos[0] - 1][0] = 0
                         agent_map[now_pos[1] + 1][now_pos[0] - 1][4] = 1
-                    if agent_map[now_pos[1]][now_pos[0] - 1 - 1][3] != 1:
+                    if agent_map[now_pos[1]][now_pos[0] - 1 - 1][3] != 1 and agent_map[now_pos[1]][now_pos[0] - 1 - 1][7] == 1:
                         agent_map[now_pos[1]][now_pos[0] - 1 - 1][0] = 0
                         agent_map[now_pos[1]][now_pos[0] - 1 - 1][4] = 1    
-                    if agent_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                    if agent_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1] - 1][now_pos[0] - 1][7] == 1:
                         agent_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
                         agent_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1   
 
@@ -180,36 +197,53 @@ def shoot(now_pos, direction, arrows, cave_map, agent_map):
                 print(f"in case 3\n{cave_map[now_pos[1] - 1][now_pos[0]][5]}")
                 if cave_map[now_pos[1] - 1][now_pos[0]][5] == 1:
                     cave_map[now_pos[1] - 1][now_pos[0]][5] = 0
-                    cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
-                    cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
-                    cave_map[now_pos[1] - 1 + 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] - 1 + 1][now_pos[0]][4] = 1
-                    cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
-                    cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
-                    cave_map[now_pos[1] - 1 - 1][now_pos[0]][0] = 0
-                    cave_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
+                        cave_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
+                    if cave_map[now_pos[1] - 1 + 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] - 1 + 1][now_pos[0]][0] = 0
+                        cave_map[now_pos[1] - 1 + 1][now_pos[0]][4] = 1
+                    if cave_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                        cave_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
+                        cave_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
+                    if cave_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1:
+                        cave_map[now_pos[1] - 1 - 1][now_pos[0]][0] = 0
+                        cave_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1
 
                     agent_map[now_pos[1] - 1][now_pos[0]][5] = 0
-                    if agent_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1:
+                    if agent_map[now_pos[1] - 1][now_pos[0] + 1][3] != 1 and agent_map[now_pos[1] - 1][now_pos[0] + 1][7] == 1:
                         agent_map[now_pos[1] - 1][now_pos[0] + 1][0] = 0
                         agent_map[now_pos[1] - 1][now_pos[0] + 1][4] = 1
-                    if agent_map[now_pos[1] - 1 + 1][now_pos[0]][3] != 1:
+                    if agent_map[now_pos[1] - 1 + 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] - 1 + 1][now_pos[0]][7] == 1:
                         agent_map[now_pos[1] - 1 + 1][now_pos[0]][0] = 0
                         agent_map[now_pos[1] - 1 + 1][now_pos[0]][4] = 1
-                    if agent_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1:
+                    if agent_map[now_pos[1] - 1][now_pos[0] - 1][3] != 1 and agent_map[now_pos[1] - 1][now_pos[0] - 1][7] == 1:
                         agent_map[now_pos[1] - 1][now_pos[0] - 1][0] = 0
                         agent_map[now_pos[1] - 1][now_pos[0] - 1][4] = 1
-                    if agent_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1:
+                    if agent_map[now_pos[1] - 1 - 1][now_pos[0]][3] != 1 and agent_map[now_pos[1] - 1 - 1][now_pos[0]][7] == 1:
                         agent_map[now_pos[1] - 1 - 1][now_pos[0]][0] = 0
                         agent_map[now_pos[1] - 1 - 1][now_pos[0]][4] = 1
-    return now_pos, direction, arrows, cave_map, agent_map
+    for j in range(6):
+        for k in range(6):
+            if agent_map[j][k][5] == 1 and agent_map[j][k][7] == 1:
+                if agent_map[j][k + 1][3] != 1:
+                    agent_map[j][k + 1][0] = 1
+                if agent_map[j][k - 1][3] != 1:
+                    agent_map[j][k - 1][0] = 1
+                if agent_map[j + 1][k][3] != 1:
+                    agent_map[j + 1][k][0] = 1
+                if agent_map[j - 1][k][3] != 1:
+                    agent_map[j - 1][k][0] = 1
+    act_list.append("shoot")
+    return now_pos, direction, arrows, cave_map, agent_map, act_list
 
 
-def climb(now_pos):
+def climb(now_pos, act_list):
     global hold_gold
     if now_pos[0] == 1 and now_pos[1] == 1:
         if hold_gold == 1:
             print("clear!! bye bye~")
+            act_list.append("climb")
             exit()
         else:
             print("no! u dont have gold")
@@ -302,12 +336,12 @@ def new_setting():
     direction = [1, 0, 0, 0]
     mk_map()
     global cave_map
-    global temp_map
     temp_map = cave_map
     arrows = 2
     for_return = [[1,1]]
 
     res = {}
+    res['temp_map'] = temp_map
     res['cave_map'] = cave_map
     res['for_return'] = for_return
     res['now_pos'] = now_pos
@@ -338,6 +372,7 @@ def exec_agent(res):
     act_list = res['act_list']
     for_return = res['for_return']
     cave_map = res['cave_map']
+    temp_map = res['temp_map']
 
     #################################
     ## 여기에 프론트에서 data 받아옴 ##
@@ -352,28 +387,28 @@ def exec_agent(res):
         #dirction[E, N, W, S]
         if(now_pos[0] > for_return[-1][0]):
             if(direction != [0, 0, 1, 0]):
-                direction = turn_left(direction)
+                direction, act_list = turn_left(direction, act_list)
             else:
-                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+                now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
         elif(now_pos[1] > for_return[-1][1]):
             if(direction != [0, 0, 0, 1]):
-                direction = turn_right(direction)
+                direction, act_list = turn_right(direction, act_list)
             else:
-                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+                now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
         elif(now_pos[0] < for_return[-1][0]):
             if(direction != [1, 0, 0, 0]):
-                direction = turn_left(direction)
+                direction, act_list = turn_left(direction, act_list)
             else:
-                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+                now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
         elif(now_pos[1] < for_return[-1][1]):
             if(direction != [0, 1, 0, 0]):
-                direction = turn_left(direction)
+                direction, act_list = turn_left(direction, act_list)
             else:
-                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+                now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
 
     elif hold_gold != 1:
         if agent_map[now_pos[1]][now_pos[0]][2] == 1:
-            hold_gold = grab(now_pos)
+            hold_gold, act_list = grab(now_pos, act_list)
             print("hold")
 
         else:
@@ -390,77 +425,84 @@ def exec_agent(res):
                 case 3:
                     x = 0
                     y = -1
-
-            if agent_map[now_pos[1]][now_pos[0] + 1][7] == 0 or agent_map[now_pos[1] + 1][now_pos[0]][7] == 0 or agent_map[now_pos[1]][now_pos[0] - 1][7] == 0 or agent_map[now_pos[1] - 1][now_pos[0]][7] == 0:
+            if len(act_list) != 0 and act_list[-1] == "shoot":
+                now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
+            elif agent_map[now_pos[1]][now_pos[0] + 1][7] == 0 or agent_map[now_pos[1] + 1][now_pos[0]][7] == 0 or agent_map[now_pos[1]][now_pos[0] - 1][7] == 0 or agent_map[now_pos[1] - 1][now_pos[0]][7] == 0:
                 match direction.index(1):
                     case 0:
                         print("1")
                         if agent_map[now_pos[1]][now_pos[0] + 1][7] == 0:
-                            now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
-                        elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
+                        #elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
+                        #    now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            direction, act_list = turn_right(direction, act_list)
                     case 1:
                         print("2")
                         if agent_map[now_pos[1] + 1][now_pos[0]][7] == 0:
-                            now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
-                        elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
+                        #elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
+                        #     now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            direction, act_list = turn_right(direction, act_list)
                     case 2:
                         print("3")
                         if agent_map[now_pos[1]][now_pos[0] - 1][7] == 0:
-                            now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
-                        elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
+                        #elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
+                        #    now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            direction, act_list = turn_right(direction, act_list)
                     case 3:
                         print("4")
                         if agent_map[now_pos[1] - 1][now_pos[0]][7] == 0:
-                            now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
-                        elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
+                        #elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
+                        #     now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            direction, act_list = turn_right(direction, act_list)
             elif agent_map[now_pos[1] + y][now_pos[0] + x][7] == 1 and agent_map[now_pos[1] + y][now_pos[0] + x][5] == 0 and agent_map[now_pos[1] + y][now_pos[0] + x][6] == 0 and agent_map[now_pos[1] + y][now_pos[0] + x][3] == 0:
-                now_pos, direction, agent_map, dead = go_forward(now_pos, direction)
+                now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
             elif agent_map[now_pos[1]][now_pos[0] + 1][7] == 1 and agent_map[now_pos[1] + 1][now_pos[0]][7] == 1 and agent_map[now_pos[1]][now_pos[0] - 1][7] == 1 and agent_map[now_pos[1] - 1][now_pos[0]][7] == 1:
                 match direction.index(1):
                     case 0:
                         print("5")
                         if agent_map[now_pos[1]][now_pos[0] + 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] + 1][3] != 1:
-                            now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                             now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            if agent_map[now_pos[1]][now_pos[0] + 1][3] == 1:
+                                direction, act_list = turn_right(direction, act_list)
+                            else:
+                                direction, act_list = turn_left(direction, act_list)
                     case 1:
                         print("6")
                         if agent_map[now_pos[1] + 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] + 1][now_pos[0]][3] != 1:
-                            now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                             now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            direction, act_list = turn_right(direction, act_list)
                     case 2:
                         print("7")
                         if agent_map[now_pos[1]][now_pos[0] - 1][5] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][6] != 1 and agent_map[now_pos[1]][now_pos[0] - 1][3] != 1:
-                            now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1]][now_pos[0] - 1][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                             now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            direction, act_list = turn_right(direction, act_list)
                     case 3:
                         print("8")
                         if agent_map[now_pos[1] - 1][now_pos[0]][5] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][6] != 1 and agent_map[now_pos[1] - 1][now_pos[0]][3] != 1:
-                            now_pos, direction, agent_map, dead= go_forward(now_pos, direction)
+                            now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
                         elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
-                            now_pos, direction, arrows, cave_map, agent_map = shoot(now_pos, direction, arrows, cave_map, agent_map)
+                             now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            direction = turn_right(direction)
+                            if agent_map[now_pos[1]][now_pos[0] + 1][3] == 1:
+                                direction, act_list = turn_right(direction, act_list)
+                            else:
+                                direction, act_list = turn_left(direction, act_list)
 
 
 
@@ -474,17 +516,18 @@ def exec_agent(res):
 
     if dead == 1:
         for_return = [[1,1]]
-        global temp_map
         cave_map = temp_map
         for j in range(6):
             for k in range(6):
                 if agent_map[j][k][7] == 1:
                     for _ in range(7):
                         agent_map[j][k][_] = cave_map[j][k][_]
+        arrows = 2
     else:
         if for_return[-1] != now_pos and hold_gold == 0:
             for_return.append([now_pos[0], now_pos[1]])
 
+    res['temp_map'] = temp_map
     res['now_pos'] = now_pos
     res['hold_gold'] = hold_gold
     res['direction'] = direction
@@ -551,7 +594,7 @@ if __name__ == "__main__":
                 turn_right(direction)
                 print(direction)
             case 4:
-                go_forward(now_pos, direction)
+                go_forward(now_pos, direction, agent_map, dead, cave_map)
                 print(f"{now_pos}\n{cave_map[now_pos[1]][now_pos[0]]}\n")
             case 5:
                 grab(now_pos)
