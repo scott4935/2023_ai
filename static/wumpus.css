@@ -30,6 +30,11 @@
   height: auto;
 }
 
+.act-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .table-container {
   display: flex;
@@ -59,6 +64,11 @@
   left: 0;
 }
 
+.action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .title {
   display: flex;
