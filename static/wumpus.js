@@ -25,14 +25,13 @@ function main(data) {
     // 승리조건
     if(agentGold===1 && agentPosition[0]===1 && agentPosition[1]===1) {
       isEnd=1;
-      console.log("YOU WIN");
     }
 
     // 테이블 생성
-    for (var i = 4; i >= 1; i--) { // table row
+    for (var i = 5; i >= 0; i--) { // table row
         var row = document.createElement("tr");
 
-        for (var j = 1; j <= 4; j++) { // table cell
+        for (var j = 0; j <= 5; j++) { // table cell
             var cell = document.createElement("td");
             var div = document.createElement("div");
 
@@ -135,9 +134,12 @@ class Observer { // 상태를 갖는 객체
 const observer = new Observer();
 var isEnd=0;
 
-var intervalId = setInterval(checkAndSendPost, 1000); // 1초마다 POST request
+var intervalId = setInterval(checkAndSendPost, 500); // 1초마다 POST request
 
 function checkAndSendPost() { // 승리조건 만족 시 종료
-  if(isEnd === 1) clearInterval(intervalId);
+  if(isEnd === 1) {
+    clearInterval(intervalId);
+    alert("YOU WIN!");
+  }
   else observer.sendPostRequest();
 }
