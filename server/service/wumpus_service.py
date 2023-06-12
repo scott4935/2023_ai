@@ -1,5 +1,45 @@
 import random # for random action e.g.) gold, wumpus, pitch ...
 
+def KB(now_pos, agent_map, direction, arrows):
+    match direction.index(1):
+        case 0:
+            x = 1
+            y = 0
+        case 1:
+            x = 0
+            y = 1
+        case 2:
+            x = -1
+            y = 0
+        case 3:
+            x = 0
+            y = -1
+    # [Stench, Breeze, Glitter, Bump, Scream, wumpus, pitch, visited]
+    # [0, 1, 2, 3, 4, 5, 6, 7]
+    if x != 0 and y == 0:
+        if agent_map[now_pos[1] + 1][now_pos[0] + x][3] == 1 or agent_map[now_pos[1] + 1][now_pos[0] + x][6] == 1 or (agent_map[now_pos[1] + 1][now_pos[0] + x][5] == 1 and arrows == 0):
+            if agent_map[now_pos[1] - 1][now_pos[0] + x][3] == 1 or agent_map[now_pos[1] - 1][now_pos[0] + x][6] == 1 or (agent_map[now_pos[1] - 1][now_pos[0] + x][5] == 1 and arrows == 0):
+                if agent_map[now_pos[1]][now_pos[0] + (x * 2)][3] == 1 or agent_map[now_pos[1]][now_pos[0] + (x * 2)][6] == 1 or (agent_map[now_pos[1]][now_pos[0] + (x * 2)][5] == 1 and arrows == 0):
+                    return 0
+                elif agent_map[now_pos[1] + 1][now_pos[0] +(x * 2)][3] == 1 or agent_map[now_pos[1] + 1][now_pos[0] + (x * 2)][6] == 1 or (agent_map[now_pos[1] + 1][now_pos[0] + (x * 2)][5] == 1 and arrows == 0):
+                    if agent_map[now_pos[1] - 1][now_pos[0] + (x * 2)][3] == 1 or agent_map[now_pos[1] - 1][now_pos[0] + (x * 2)][6] == 1 or (agent_map[now_pos[1] - 1][now_pos[0] + (x * 2)][5] == 1 and arrows == 0):
+                        if agent_map[now_pos[1]][now_pos[0] + (x * 3)][3] == 1 or agent_map[now_pos[1]][now_pos[0] + (x * 3)][6] == 1 or (agent_map[now_pos[1]][now_pos[0] + (x * 3)][5] == 1 and arrows == 0):
+                            return 0
+                        elif agent_map[now_pos[1] + 1][now_pos[0] + (x * 3)][3] == 1 or agent_map[now_pos[1] + 1][now_pos[0] + (x * 3)][6] == 1 or (agent_map[now_pos[1] + 1][now_pos[0] + (x * 3)][5] == 1 and arrows == 0):
+                            if agent_map[now_pos[1] - 1][now_pos[0] + (x * 3)][3] == 1 or agent_map[now_pos[1] - 1][now_pos[0] + (x * 3)][6] == 1 or (agent_map[now_pos[1] - 1][now_pos[0] + (x * 3)][5] == 1 and arrows == 0):
+                                if agent_map[now_pos[1]][now_pos[0] + (x * 4)][3] == 1 or agent_map[now_pos[1]][now_pos[0] + (x * 4)][6] == 1 or (agent_map[now_pos[1]][now_pos[0] + (x * 4)][5] == 1 and arrows == 0):
+                                    return 0
+    elif x == 0 and y != 0:
+        if agent_map[now_pos[1] + y][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1] + y][now_pos[0] + 1][6] == 1 or (agent_map[now_pos[1] + y][now_pos[0] + 1][5] == 1 and arrows != 0):
+            if agent_map[now_pos[1] + y][now_pos[0] - 1][3] == 1 or agent_map[now_pos[1] + y][now_pos[0] - 1][6] == 1 or (agent_map[now_pos[1] + y][now_pos[0] - 1][5] == 1 and arrows == 0):
+
+
+
+        
+        
+        
+
+
 #########################################################################
 #               ____    ____    _____    _    ____    _                 #
 #              /  _ \  /   _\  /__ __\  / \  /  _ \  / \  /|            #
@@ -84,13 +124,13 @@ def go_forward(now_pos, direction, agent_map, dead, cave_map, act_list):
     return now_pos, direction, agent_map, dead, cave_map, act_list
 
 # grab the gold
-def grab(now_pos, act_list):
+def grab(now_pos, act_list, cave_map):
     # reversed x,y ..... i cant know reason
-    print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[1]][now_pos[0]]}")
+    #print(f"{now_pos[0]}, {now_pos[1]}, {gold_pos}\n{cave_map[now_pos[1]][now_pos[0]]}")
     if (cave_map[now_pos[1]][now_pos[0]][2] == 1):
         cave_map[now_pos[1]][now_pos[0]][2] = 0
         act_list.append("grab")
-        return 1, act_list
+        return 1, act_list, cave_map
 
 # shoot arrow
 def shoot(now_pos, direction, arrows, cave_map, agent_map, act_list):
@@ -428,7 +468,7 @@ def exec_agent(res):
 
     elif hold_gold != 1:
         if agent_map[now_pos[1]][now_pos[0]][2] == 1:
-            hold_gold, act_list = grab(now_pos, act_list)
+            hold_gold, act_list, cave_map = grab(now_pos, act_list, cave_map)
             print("hold")
 
         else:
@@ -492,7 +532,7 @@ def exec_agent(res):
                         elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
                              now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            if agent_map[now_pos[1]][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] == 1:
+                            if (agent_map[now_pos[1]][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][6] == 1) and (agent_map[now_pos[1] + 1][now_pos[0]][6] == 1 or agent_map[now_pos[1] + 1][now_pos[0]][5] == 1 or agent_map[now_pos[1] + 1][now_pos[0]][3] == 1):
                                 direction, act_list = turn_right(direction, act_list)
                             else:
                                 direction, act_list = turn_left(direction, act_list)
@@ -519,7 +559,7 @@ def exec_agent(res):
                         elif agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 and arrows > 0:
                              now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            if agent_map[now_pos[1]][now_pos[0] + 1][3] == 1:
+                            if (agent_map[now_pos[1] - 1][now_pos[0]][3] == 1 or agent_map[now_pos[1] - 1][now_pos[0]][5] == 1 or agent_map[now_pos[1] - 1][now_pos[0]][6] == 1) and (agent_map[now_pos[1]][now_pos[0] + 1][6] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][3] == 1):
                                 direction, act_list = turn_right(direction, act_list)
                             else:
                                 direction, act_list = turn_left(direction, act_list)
@@ -546,7 +586,7 @@ def exec_agent(res):
     else:
         if for_return[-1] != now_pos and hold_gold == 0:
             if(now_pos in for_return):
-                while(for_return(-1) == now_pos):
+                while(for_return[-1] == now_pos): # () ==> [] 수정
                     for_return.pop()
             else:
                 for_return.append([now_pos[0], now_pos[1]])
