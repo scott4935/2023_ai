@@ -105,7 +105,7 @@ class Observer { // 상태를 갖는 객체
   staticData={};
 
   constructor() {
-    fetch('http://localhost:5000/wumpus')
+    fetch('http://110.9.188.36:5000/wumpus')
       .then(response => response.json())
       .then(data => {
         this.staticData = data; // GET response를 staticData에 저장
@@ -115,7 +115,7 @@ class Observer { // 상태를 갖는 객체
   }
 
   sendPostRequest() {
-    fetch('http://localhost:5000/wumpus', {
+    fetch('http://110.9.188.36:5000/wumpus', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
