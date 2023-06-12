@@ -1,6 +1,6 @@
 from flask import jsonify, render_template, request
 from flask_restx import Namespace, Resource
-from ..service.wumpus_service_bck import (
+from ..service.wumpus_service import (
     turn_left, turn_right, go_forward, grab, shoot, climb, mk_map, new_setting, exec_agent
 )
 
