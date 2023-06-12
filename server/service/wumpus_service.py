@@ -226,13 +226,13 @@ def shoot(now_pos, direction, arrows, cave_map, agent_map, act_list):
     for j in range(6):
         for k in range(6):
             if agent_map[j][k][5] == 1 and agent_map[j][k][7] == 1:
-                if agent_map[j][k + 1][3] != 1:
+                if agent_map[j][k + 1][3] != 1 and agent_map[j][k + 1][7] != 0:
                     agent_map[j][k + 1][0] = 1
-                if agent_map[j][k - 1][3] != 1:
+                if agent_map[j][k - 1][3] != 1 and agent_map[j][k - 1][7] != 0:
                     agent_map[j][k - 1][0] = 1
-                if agent_map[j + 1][k][3] != 1:
+                if agent_map[j + 1][k][3] != 1 and agent_map[j + 1][k][7] != 0:
                     agent_map[j + 1][k][0] = 1
-                if agent_map[j - 1][k][3] != 1:
+                if agent_map[j - 1][k][3] != 1 and agent_map[j - 1][k][7] != 0:
                     agent_map[j - 1][k][0] = 1
     act_list.append("shoot")
     return now_pos, direction, arrows, cave_map, agent_map, act_list
@@ -472,7 +472,7 @@ def exec_agent(res):
                         elif agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and arrows > 0:
                              now_pos, direction, arrows, cave_map, agent_map, act_list = shoot(now_pos, direction, arrows, cave_map, agent_map, act_list)
                         else:
-                            if agent_map[now_pos[1]][now_pos[0] + 1][3] == 1:
+                            if agent_map[now_pos[1]][now_pos[0] + 1][3] == 1 or agent_map[now_pos[1]][now_pos[0] + 1][5] == 1 and agent_map[now_pos[1]][now_pos[0] + 1][6] == 1:
                                 direction, act_list = turn_right(direction, act_list)
                             else:
                                 direction, act_list = turn_left(direction, act_list)
