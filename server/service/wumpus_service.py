@@ -14,7 +14,7 @@ def turn_left(direction, act_list):
     now_direction = direction.index(1)
     direction[now_direction] = 0
     direction[(now_direction + 1) % 4] = 1
-    act_list.append("turn_left")
+    act_list.append("Turn Left")
     return direction, act_list
 
 # turn_right
@@ -22,7 +22,7 @@ def turn_right(direction, act_list):
     now_direction = direction.index(1)
     direction[now_direction] = 0
     direction[now_direction - 1] = 1
-    act_list.append("turn_right")
+    act_list.append("Turn Right")
     return direction, act_list
 
 # go_forward / 0 == E, 1 == N, 2 == W, 3 == S
@@ -32,32 +32,40 @@ def go_forward(now_pos, direction, agent_map, dead, cave_map, act_list):
         case 0:
             if(now_pos[0] < 4):
                 now_pos[0] += 1
+                act_list.append("Go Forward")
             else:
                 print(f"bumped out!")
                 agent_map[now_pos[1]][now_pos[0] + 1][3] = 1
                 agent_map[now_pos[1]][now_pos[0] + 1][7] = 1
+                act_list.append("Bumped")
         case 1:
             if(now_pos[1] < 4):
                 now_pos[1] += 1
+                act_list.append("Go Forward")
             else:
                 print(f"bumped out!")
                 agent_map[now_pos[1] + 1][now_pos[0]][3] = 1
                 agent_map[now_pos[1] + 1][now_pos[0]][7] = 1
+                act_list.append("Bumped")
         case 2:
             if(now_pos[0] > 1):
                 now_pos[0] -= 1
+                act_list.append("Go Forward")
             else:
                 print(f"bumped out!")
                 agent_map[now_pos[1]][now_pos[0] - 1][3] = 1
                 agent_map[now_pos[1]][now_pos[0] - 1][7] = 1
+                act_list.append("Bumped")
         case 3:
             if(now_pos[1] > 1):
                 now_pos[1] -= 1
+                act_list.append("Go Forward")
             else:
                 print(f"bumped out!")
                 agent_map[now_pos[1] - 1][now_pos[0]][3] = 1
                 agent_map[now_pos[1] - 1][now_pos[0]][7] = 1
-    act_list.append("go_forward")
+                act_list.append("Bumped")
+    
     for _ in range(7):
         agent_map[now_pos[1]][now_pos[0]][_] = cave_map[now_pos[1]][now_pos[0]][_]
         agent_map[now_pos[1]][now_pos[0]][7] = 1
@@ -387,22 +395,34 @@ def exec_agent(res):
         #dirction[E, N, W, S]
         if(now_pos[0] > for_return[-1][0]):
             if(direction != [0, 0, 1, 0]):
-                direction, act_list = turn_left(direction, act_list)
+                if(direction == [0, 1, 0, 0]):
+                    direction, act_list = turn_left(direction, act_list)
+                else:
+                    direction, act_list = turn_right(direction, act_list)
             else:
                 now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
         elif(now_pos[1] > for_return[-1][1]):
             if(direction != [0, 0, 0, 1]):
-                direction, act_list = turn_right(direction, act_list)
+                if(direction == [0, 0, 1, 0]):
+                    direction, act_list = turn_left(direction, act_list)
+                else:
+                    direction, act_list = turn_right(direction, act_list)
             else:
                 now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
         elif(now_pos[0] < for_return[-1][0]):
             if(direction != [1, 0, 0, 0]):
-                direction, act_list = turn_left(direction, act_list)
+                if(direction == [0, 0, 0, 1]):
+                    direction, act_list = turn_left(direction, act_list)
+                else:
+                    direction, act_list = turn_right(direction, act_list)
             else:
                 now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
         elif(now_pos[1] < for_return[-1][1]):
             if(direction != [0, 1, 0, 0]):
-                direction, act_list = turn_left(direction, act_list)
+                if(direction == [1, 0, 0, 0]):
+                    direction, act_list = turn_left(direction, act_list)
+                else:
+                    direction, act_list = turn_right(direction, act_list)
             else:
                 now_pos, direction, agent_map, dead, cave_map, act_list = go_forward(now_pos, direction, agent_map, dead, cave_map, act_list)
 
@@ -525,7 +545,14 @@ def exec_agent(res):
         arrows = 2
     else:
         if for_return[-1] != now_pos and hold_gold == 0:
-            for_return.append([now_pos[0], now_pos[1]])
+            if(now_pos in for_return):
+                while(for_return(-1) == now_pos):
+                    for_return.pop()
+            else:
+                for_return.append([now_pos[0], now_pos[1]])
+    
+    if hold_gold == 1 and now_pos == [1, 1]:
+        act_list.append('Goal!')
 
     res['temp_map'] = temp_map
     res['now_pos'] = now_pos
